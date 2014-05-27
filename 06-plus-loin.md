@@ -27,54 +27,39 @@ Ruby, c'est du JavaScript qui est généré après une phase de compilation.
 Prenons par exemple le code suivant disponible dans la documentation
 officielle de CoffeeScript : http://coffeescript.org/#conditionals :
 
+```coffeescript
 mood = greatlyImproved if singing
-
-
 if happy and knowsIt
-
-clapsHands()
-
-chaChaCha()
-
+	clapsHands()
+	chaChaCha()
 else
-
-showIt()
-
-
+	showIt()
 date = if friday then sue else jill
+```
 
 Après compilation, voici le JavaScript généré :
 
+```javascript
 var date, mood;
 
-
 if (singing) {
-
-mood = greatlyImproved;
-
+	mood = greatlyImproved;
 }
-
 
 if (happy && knowsIt) {
-
-clapsHands();
-
-chaChaCha();
-
+	clapsHands();
+	chaChaCha();
 } else {
-
-showIt();
-
+	showIt();
 }
-
-
 date = friday ? sue : jill;
+```
 
 C'est lorsque l'on commence à utiliser des classes et des objets
-queCoffeeScript révèle tout son potentiel. En effet la programmation objet
+que CoffeeScript révèle tout son potentiel. En effet la programmation objet
 n'existe pas en JavaScript, bien que des techniques permettent de faire tout
 comme, mais au prix d'un code encore plus difficilement compréhensible.
-CoffeeScript peut alorsrendre les choses beaucoup plus faciles !
+CoffeeScript peut alors rendre les choses beaucoup plus faciles !
 
 C'est ainsi que s'achève notre exploration de Node.js. J'espère que vous aurez
 pris autant de plaisir à lire ce livre que j'en ai eu à l'écrire. J'espère
