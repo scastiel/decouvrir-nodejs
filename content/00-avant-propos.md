@@ -1,3 +1,8 @@
+# License
+
+Le contenu de ce livre est distribué sous license
+[Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International](http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr).
+
 # Avant-propos
 
 JavaScript a toujours été l'un de mes langages préférés. Il est souvent
