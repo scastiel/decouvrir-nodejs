@@ -1,6 +1,3 @@
-Redécouvrir JavaScript avec Node.js
------------------------------------
-
 # Avant-propos
 
 JavaScript a toujours été l'un de mes langages préférés. Il est souvent

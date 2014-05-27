@@ -1,0 +1,31 @@
+.container.book {
+	width: 600px;
+	margin: 20px auto;
+}
+
+* { text-align: justify; }
+
+li {
+	margin-bottom: 0 !important;
+	margin-top: 0 !important
+}
+
+#TOC ul {
+	margin-top: 0;
+}
+
+h1 {
+	page-break-before: always;
+}
+h1.title {
+	page-break-before: avoid;
+}
+
+h1 a, h2 a, h3 a, h4 a, h5 a, h6 a {
+	text-decoration: none;
+	color: inherit;
+}
+
+h1 {
+	margin-top: 4cm !important
+}
