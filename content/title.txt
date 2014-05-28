@@ -1,2 +1,0 @@
-% Redécouvrir JavaScript avec Node.js
-% Sébastien Castiel

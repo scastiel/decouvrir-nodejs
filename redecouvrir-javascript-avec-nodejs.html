@@ -1,0 +1,1126 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <meta http-equiv="Content-Style-Type" content="text/css" />
+  <meta name="generator" content="pandoc" />
+  <meta name="author" content="Sébastien Castiel <sebastien.castiel@gmail.com>" />
+  <title>Redécouvrir JavaScript avec Node.js</title>
+  <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; }
+code > span.dt { color: #902000; }
+code > span.dv { color: #40a070; }
+code > span.bn { color: #40a070; }
+code > span.fl { color: #40a070; }
+code > span.ch { color: #4070a0; }
+code > span.st { color: #4070a0; }
+code > span.co { color: #60a0b0; font-style: italic; }
+code > span.ot { color: #007020; }
+code > span.al { color: #ff0000; font-weight: bold; }
+code > span.fu { color: #06287e; }
+code > span.er { color: #ff0000; font-weight: bold; }
+  </style>
+  <link rel="stylesheet" href="css/style.css" type="text/css" />
+  <link rel="stylesheet" href="css/github.css" type="text/css" />
+</head>
+<body>
+<div class="container book">
+<div id="header">
+<h1 class="title">Redécouvrir JavaScript avec Node.js</h1>
+</div>
+<div id="TOC">
+<ul>
+<li><a href="#license">License</a></li>
+<li><a href="#avant-propos">Avant-propos</a></li>
+<li><a href="#chapitre-1-javascript">Chapitre 1 : JavaScript</a><ul>
+<li><a href="#historique">1.1 Historique</a></li>
+<li><a href="#les-bases-du-langage">1.2 Les bases du langage</a><ul>
+<li><a href="#les-variables">1.2.1 Les variables</a></li>
+<li><a href="#les-types-simples">1.2.2 Les types simples</a></li>
+<li><a href="#les-tableaux-et-les-objets">1.2.3 Les tableaux et les objets</a></li>
+<li><a href="#les-fonctions">1.2.4 Les fonctions</a></li>
+<li><a href="#mixons-le-tout">1.2.5 Mixons le tout</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#chapitre-2-découverte-de-node.js">Chapitre 2 : Découverte de Node.js</a><ul>
+<li><a href="#présentation">2.1 Présentation</a></li>
+<li><a href="#installation">2.2 Installation</a></li>
+<li><a href="#hello-world">2.3 Hello World!</a><ul>
+<li><a href="#le-code-du-programme">2.3.1 Le code du programme</a></li>
+<li><a href="#explication-détaillée">2.3.2 Explication détaillée</a></li>
+<li><a href="#en-résumé">2.3.3 En résumé</a></li>
+</ul></li>
+<li><a href="#un-exemple-plus-complexe...">2.4 Un exemple plus complexe...</a><ul>
+<li><a href="#une-page-html">2.4.1 Une page HTML</a></li>
+<li><a href="#le-script-node.js">2.4.2 Le script Node.js</a></li>
+<li><a href="#en-résumé-1">2.4.3 En résumé</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#chapitre-3-un-site-web-bien-architecturé-avec-express">Chapitre 3 : Un site web bien architecturé avec Express</a><ul>
+<li><a href="#installation-de-express">3.1 Installation de Express</a></li>
+<li><a href="#une-application-basique-avec-express">3.2 Une application basique avec Express</a></li>
+<li><a href="#utiliser-des-templates">3.3 Utiliser des templates</a><ul>
+<li><a href="#présentation-du-moteur-de-template-jade">3.3.1 Présentation du moteur de template Jade</a></li>
+<li><a href="#utiliser-jade-avec-express">3.3.2 Utiliser Jade avec Express</a></li>
+</ul></li>
+<li><a href="#une-application-express-plus-complexe">3.4 Une application Express plus complexe</a></li>
+<li><a href="#exercice">3.5 Exercice</a></li>
+<li><a href="#en-résumé-2">3.6 En résumé</a></li>
+</ul></li>
+<li><a href="#chapitre-4-utiliser-des-bases-de-données">Chapitre 4 : Utiliser des bases de données</a><ul>
+<li><a href="#sqlite3">4.1 Sqlite3</a><ul>
+<li><a href="#présentation-1">4.1.1 Présentation</a></li>
+<li><a href="#premier-exemple">4.1.2 Premier exemple</a></li>
+<li><a href="#deuxième-exemple">4.1.3 Deuxième exemple</a></li>
+<li><a href="#aller-plus-loin-avec-un-orm">4.1.4 Aller plus loin avec un ORM</a></li>
+</ul></li>
+<li><a href="#mongodb">4.2 MongoDB</a><ul>
+<li><a href="#le-shell-de-mongodb">4.2.1 Le shell de MongoDB</a></li>
+<li><a href="#mongodb-avec-node.js-mongoose">4.2.2 MongoDB avec Node.js : Mongoose</a></li>
+<li><a href="#conclusion-sur-mongodb">4.2.3 Conclusion sur MongoDB</a></li>
+</ul></li>
+</ul></li>
+<li><a href="#chapitre-5-créez-et-diffusez-vos-modules">Chapitre 5 : Créez et diffusez vos modules</a><ul>
+<li><a href="#spécifications-de-notre-module">5.1 Spécifications de notre module</a></li>
+<li><a href="#testons-notre-module-avec-mocha">5.2 Testons notre module avec Mocha</a></li>
+<li><a href="#le-module-de-geocoding">5.3 Le module de geocoding</a></li>
+<li><a href="#diffusons-notre-module">5.4 Diffusons notre module</a></li>
+<li><a href="#conclusion-sur-les-modules">5.5 Conclusion sur les modules</a></li>
+</ul></li>
+<li><a href="#aller-plus-loin">Aller plus loin</a></li>
+</ul>
+</div>
+<h1 id="license"><a href="#license">License</a></h1>
+<p>Le contenu de ce livre est distribué sous license <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr">Creative Commons Attribution - Pas d’Utilisation Commerciale - Partage dans les Mêmes Conditions 4.0 International</a>.</p>
+<h1 id="avant-propos"><a href="#avant-propos">Avant-propos</a></h1>
+<p>JavaScript a toujours été l'un de mes langages préférés. Il est souvent considéré comme un langage complexe à maintenir, probablement à cause des possibilités syntaxiques qu'il offre (<em>closures</em>, notation JSON...), mais en réalité il ne demande peut-être qu'un peu plus de rigueur que d'autres langages.</p>
+<p>La première fois que j'ai entendu parler de Node.js et que j'ai vu quelques exemples de code, il m'a fallu quelques minutes pour être convaincu que tant de possibilités pouvaient être offertes en si peu de lignes. En écrivant ce livre, j'espère réussir à vous donner un aperçu de ses possibilités, pour que vous preniez autant de plaisir à l'utiliser que j'en ai eu moi-même.</p>
+<p>Ce livre vous exposera quelques possibilités offertes par Node.js, en commençant naturellement par une rapide initiation aux bases. Après quelques rappels sur la syntaxe de JavaScript (chapitre 1), vous apprendrez :</p>
+<ul>
+<li>comment installer Node.js sur votre ordinateur et écrire votre premier programme (chapitre 2) ;</li>
+<li>comment créer une petite application web bien structurée à l'aide de templates (chapitre 3) ;</li>
+<li>comment utiliser des bases de données avec Node.js (chapitre 4) ;</li>
+<li>comment créer vos propres modules et les distribuer pour les rendre disponibles auprès de la communauté (chapitre 5).</li>
+</ul>
+<p>Je pars du principe que vous avez déjà utilisé JavaScript, même si dans le premier chapitre je reviendrai sur les bases de la syntaxe du langage. Je suppose aussi que vous connaissez les rudiments des échanges réseaux d'une application web (appels AJAX, protocole HTTP...).</p>
+<p>Notez également que les chapitres 3, 4 et 5 peuvent être lus dans n'importe quel ordre.</p>
+<p>À présent j'espère que vous prendre plaisir à lire ce livre. Pour tout critique, remarque ou suggestion, n'hésitez pas à me contacter à l'adresse : sebastien.castiel@gmail.com.</p>
+<h1 id="chapitre-1-javascript"><a href="#chapitre-1-javascript">Chapitre 1 : JavaScript</a></h1>
+<h2 id="historique"><a href="#historique">1.1 Historique</a></h2>
+<p>JavaScript est un langage créé en 1995 pour le compte du navigateur Netscape. Sa syntaxe a été ouvertement inspirée de Java. Les deux langages étaient d'ailleurs présentés en complément (les sociétés Netscape et Sun Microsystems étant partenaires), ce qui a créé une confusion générale, encore présente aujourd'hui. Disons-le clairement : JavaScript et Java ne sont pas (ou plus) du tout liés. (On entend souvent l'analogie &quot;Java is to JavaScript as ham is to hamster&quot;, ou Java est à JavaScript ce que le jambon (ham) est au hamster.)</p>
+<p>Depuis, JavaScript a été standardisé par l'organisme <em>ECMA International</em> (le standard a été nommé <em>ECMAScript</em>). C'est un langage qui évolue encore, les versions 1.7 et 1.8, apportant plusieurs nouvelles possibilités, sont progressivement supportées par les navigateurs (et par Node.js !).</p>
+<p>JavaScript a connu plusieurs essors. Tout d'abord, il a ajouté aux pages HTML statiques des effets pour les rendre plus dynamiques : des animations au survol d'une image, des textes defilants, etc. Aujourd'hui ces effets (qui avaient été globalement nommés <em>DHTML</em> pour <em>Dynamic</em> _ HTML_) nous semblent un peu vieillots, caractéristiques du web des années 1990-début 2000.</p>
+<p>Vers le début des années 2000, JavaScript connaît alors un deuxième essor majeur, avec l'apparition d'une technologie qui révolutionnera la manière dont on utilise Internet : Ajax <em>(Asynchronous JavaScript and XML)</em>. Pour faire simple, Ajax consiste à utiliser des possibilités de JavaScript et des navigateurs pourtant présentes depuis fort longtemps pour faire charger des données depuis le serveur sans avoir besoin de recharger la page. Cela paraît simple, pourtant cette avancéea permis de concevoir des applications web tellement réactives qu'elles se sont progressivement substituées aux applications de bureau.</p>
+<p>Pour faciliter l'utilisation d'Ajax (et notamment pour gérer les différences d'implémentation entre les navigateurs), plusieurs bibliothèques JavaScript ont vu le jour ; celle qui fait référence aujourd'hui est <em>jQuery</em> (http://jquery.com).</p>
+<p>Enfin, on assiste aujourd'hui à une nouvelle avancée majeure de l'utilisation de JavaScript. Alors que jQuery permet de faire des appels Ajax et de manipuler une page HTML très facilement, certains frameworks vont encore plus loin en créant des applications JavaScript complexes et structurées, par exemple en donnant la possibilité d'utiliser une architecture <em>modèle-vue- controleur (MVC)</em>, avec gestion de modèles <em>(templates)</em>. Et pour accompagner cette tendance, cela se passe à la fois :</p>
+<ul>
+<li>côté client : avec des frameworks comme Backbone ou AngularJS ;</li>
+<li>côté serveur : avec Node.js, c'est l'objet de ce livre !</li>
+</ul>
+<p>Il est donc désormais possible d'utiliser avec JavaScript des méthodes réservées il y a peu aux gros langages comme PHP, Java ou Ruby : architecture MVC, tests unitaires, <em>build</em>, distribution de modules, gestion de dépendances, etc.</p>
+<h2 id="les-bases-du-langage"><a href="#les-bases-du-langage">1.2 Les bases du langage</a></h2>
+<p>Bien que ce livre suppose que vous soyez déjà familier avec JavaScript, il peut être utile de rappeler quelques bases du langage que même les plus expérimentés d'entre nous pourraient avoir oublié. Si vous êtes confiant, rien ne vous empêche de passer au chapitre suivant !</p>
+<h3 id="les-variables"><a href="#les-variables">1.2.1 Les variables</a></h3>
+<p>Une variable se déclare en JavaScript avec l'instruction <em>var</em>. On lui affecte une valeur grâce à l'opérateur <em>=</em> (égal) et les opérateurs arithmétiques bien connus : _+, -, *, /_, etc.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> a;
+<span class="kw">var</span> b = <span class="dv">1</span>;
+a = b + <span class="dv">2</span>;</code></pre>
+<h3 id="les-types-simples"><a href="#les-types-simples">1.2.2 Les types simples</a></h3>
+<p>Les types de données élémentaires sont également les mêmes que dans les langages les plus courants :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">a = <span class="kw">true</span>;    <span class="co">// booléen</span>
+a = <span class="dv">1</span>;       <span class="co">// entier</span>
+a = <span class="fl">1.1</span>;     <span class="co">// flottant</span>
+a = <span class="st">&quot;Hello&quot;</span>; <span class="co">// chaîne de caractères</span>
+a = <span class="st">&#39;Hello&#39;</span>; <span class="co">// idem</span></code></pre>
+<h3 id="les-tableaux-et-les-objets"><a href="#les-tableaux-et-les-objets">1.2.3 Les tableaux et les objets</a></h3>
+<p>Parmi les types de données plus complexes, on retrouve d'abord les tableaux, qui peuvent être initialisés grâce à la notation JSON avec des crochets :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> t = [ <span class="dv">1</span>, <span class="kw">true</span>, <span class="st">&#39;Hello&#39;</span> ];
+<span class="kw">var</span> u = t[<span class="dv">0</span>]; <span class="co">// u = 1</span></code></pre>
+<p>JSON <em>(JavaScript Object Notation)</em> est un langage permettant de représenter des données, notamment en JavaScript, bien qu'il puisse être utilisé avec quasimment tous les langages. Plus d'informations sur http://www.json.org/json-fr.html.</p>
+<p>On trouve également les tableaux associatifs, ou dictionnaires, qui en JavaScript sont appelés <em>objets</em>, et sont initialisés grâce à une notation avec des accolades :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> o = { <span class="dt">prop1</span>: <span class="st">&#39;Hello&#39;</span>, <span class="dt">prop2</span>: <span class="st">&#39;World!&#39;</span> };
+<span class="kw">var</span> v = o[<span class="st">&#39;prop1&#39;</span>]; <span class="co">// les deux lignes sont</span>
+<span class="kw">var</span> v = <span class="ot">o</span>.<span class="fu">prop1</span>;    <span class="co">// équivalentes</span></code></pre>
+<h3 id="les-fonctions"><a href="#les-fonctions">1.2.4 Les fonctions</a></h3>
+<p>En JavaScript les fonctions ne sont rien d'autres qu'un type de donnée. Une « fonction » comme on l'entend dans les autres langages est donc en JavaScript une variable contenant une donnée de type fonction :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> f = <span class="kw">function</span>(i) {
+    <span class="kw">return</span> i + <span class="dv">1</span>;
+};</code></pre>
+<p>Il est possible d'utiliser une notation plus conventionnelle :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">function</span> <span class="fu">f</span>() {
+    <span class="kw">return</span> i + <span class="dv">1</span>;
+}</code></pre>
+<p>Un objet ou un tableau peut donc contenir une fonction :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> o = {
+    <span class="dt">f</span>: <span class="kw">function</span>(i) {
+        <span class="kw">return</span> i + <span class="dv">1</span>;
+    }
+};
+<span class="kw">var</span> a =<span class="ot">o</span>.<span class="fu">f</span>(<span class="dv">1</span>); <span class="co">// a = 2</span></code></pre>
+<h3 id="mixons-le-tout"><a href="#mixons-le-tout">1.2.5 Mixons le tout</a></h3>
+<p>Avec tous ces types de données, on peut créer des objets plutôt complexes :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> o = {
+    <span class="dt">t</span>: <span class="dv">1</span>,
+    <span class="dt">s</span>: [
+        <span class="st">&#39;test&#39;</span>,
+        <span class="kw">function</span>(p) {
+            <span class="kw">return</span> <span class="kw">function</span>(q, f, t) {
+                u = q + (<span class="fu">f</span>(t))(q);
+                <span class="kw">return</span> { <span class="dt">somme</span>: q + p, <span class="dt">produit</span>: q * p };
+            };
+        }
+    ]
+};</code></pre>
+<h1 id="chapitre-2-découverte-de-node.js"><a href="#chapitre-2-découverte-de-node.js">Chapitre 2 : Découverte de Node.js</a></h1>
+<h2 id="présentation"><a href="#présentation">2.1 Présentation</a></h2>
+<p>Depuis sa création, JavaScript a naturellement été associé aux sites et applications web, domaine pour lequel il a été créé. Il a permis de rendre les pages web plus dynamiques, en commençant par des animations très <em>flashy</em> dans les années 1990/2000 (ce que l'on appelait le DHTML), pour en arriver vers les applications les plus complexes que nous connaissons tous aujourd'hui et qui se substituent aux applications de bureau : webmail avec Gmail, cartographie avec Google Maps, etc.</p>
+<p>Mais si JavaScript a été créé plus spécialement pour être exécuté dans un navigateur, il a été standardisé et permet théoriquement d'être utilisé pour tout type d'application, et notamment des programmes autonomes, c'est-à-dire ne nécessitant pas de navigateur web pour s'exécuter. C'est sur cet usage que se base Node.js.</p>
+<p>Node.js se constitue d'un programme (appelé <em>node</em>) permettant d'interpréter du code JavaScript, traditionnellement en ligne de commande. Il est également accompagné d'outils supplémentaires, dont le plus intéressant s'appelle <em>npm</em>, pour <em>Node package manager</em>. Il s'agit d'un gestionnaire de paquet à l'image de <em>yum</em> ou <em>apt</em> (pour les distributions Linux RedHat et Debian/Ubuntu respectivement), sauf que lui permet de récupérer proprement des outils tiers utilisables avec Node.js.</p>
+<p>Note : dans la suite du livre, pour faire référence à Node.js, je pourrais également parler simplement de <em>Node</em>.</p>
+<h2 id="installation"><a href="#installation">2.2 Installation</a></h2>
+<p>Node est un outil multiplateforme. Il est possible très facilement de l'utiliser sous Linux, Windows, OS X, etc. Son installation est on ne peut plus simple :</p>
+<ul>
+<li>sous Windows, rendez-vous sur le site officiel de Node (http://nodejs.org) qui à ce jour propose en page d'accueil un lien permettant de télécharger l'installeur ;</li>
+<li>sous Linux ou MacOS, votre gestionnaire de paquets favori permet généralement de trouver le programme <em>node</em> ou <em>nodejs</em> sans problème.</li>
+</ul>
+<p>Pour vérifier que l'installation a bien été effectuée, lancez dans un terminal la commande suivante :</p>
+<pre class="shell"><code>$ node --version</code></pre>
+<p>Le résultat doit être la version de Node.js installée (v0.10.18 au moment de l'écriture de ce livre).</p>
+<p>À présent que tout est en place, passons à l'écriture de notre premier script Node.js !</p>
+<h2 id="hello-world"><a href="#hello-world">2.3 Hello World!</a></h2>
+<p>Pour notre premier script, nous allons créer un petit serveur web. Là vous devez vous dire que c'est ambitieux comme premier exercice, mais c'est parce que vous ne connaissez pas encore Node.js !</p>
+<h3 id="le-code-du-programme"><a href="#le-code-du-programme">2.3.1 Le code du programme</a></h3>
+<p>J'ai volontairement choisi de reprendre le programme d'exemple disponible en page d'accueil du site officiel de Node, car celui-ci montre de manière très efficace l'une des principales qualités de Node : sa concision.</p>
+<p>Voici le code du programme :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> http = <span class="fu">require</span>(<span class="st">&#39;http&#39;</span>);
+<span class="ot">http</span>.<span class="fu">createServer</span>(<span class="kw">function</span> (req, res) {
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/plain&#39;</span>});
+    <span class="ot">res</span>.<span class="fu">end</span>(<span class="st">&#39;Hello World</span><span class="ch">\n</span><span class="st">&#39;</span>);
+}).<span class="fu">listen</span>(<span class="dv">1337</span>, <span class="st">&#39;127.0.0.1&#39;</span>);
+
+<span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Server running at http://127.0.0.1:1337/&#39;</span>);</code></pre>
+<p>Et c'est tout ! Avant d'expliquer le contenu du script, je vous propose de l'exécuter pour découvrir la magie. Pour cela créez un fichier appelé par exemple <em>hello.js</em> dans lequel vous placez le code ci-dessus. Puis ouvrez la ligne de commande, placez-vous dans le répertoire du script, et tapez la commande <code>node hello.js</code> ; l'affichage devrait être le suivant :</p>
+<pre class="shell"><code>$ node hello.js
+Server running at http://127.0.0.1:1337/</code></pre>
+<p>Le programme est en attente, c'est normal c'est notre serveur qui tourne. À présent ouvrez votre navigateur web et rendez-vous à l'URL <em>http://127.0.0.1:1337</em> ; le texte « Hello World » s'affiche.</p>
+<p>Donc si on résume, vous venez de créer un serveur web en 6 lignes de code ! (Et encore, l'une d'elles ne sert qu'à afficher un message « Server running… »)</p>
+<h3 id="explication-détaillée"><a href="#explication-détaillée">2.3.2 Explication détaillée</a></h3>
+<p>Passons à l'explication de ce programme, ligne par ligne (ou presque).</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> http = <span class="fu">require</span>(<span class="st">&#39;http&#39;</span>);</code></pre>
+<p>Comme je l'ai dit, Node.js permet d'utiliser des outils tiers appelés modules. Il inclut de nombreux modules de base, parmi eux le module <em>http</em> permettant de créer un serveur web. Par la fonction require, nous demandons à Node.js d'inclure le module <em>http</em>, et nous décidons d'accéder à ses méthodes via un objet <code>http</code>. (Nous aurions pu écrire <code>var toto = require('http'); toto.createServer(…)</code> mais cela aurait été moins parlant…)</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">http</span>.<span class="fu">createServer</span>(<span class="kw">function</span>(req,res) { ... }).<span class="fu">listen</span>(<span class="dv">1337</span>, <span class="st">&#39;127.0.0.1&#39;</span>);</code></pre>
+<p>La méthode <code>createServer</code> de l'objet <code>http</code> permet comme son nom l'indique de créer un serveur, en l'occurrence un serveur web (HTTP). Nous reviendrons sur la fonction qu'elle prend en paramètres dans quelques instants.</p>
+<p>Elle renvoie un objet « serveur », qui est ici masqué en appelant directement se méthode <code>listen</code>. On aurait pu écrire :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> server = <span class="ot">http</span>.<span class="fu">createServer</span>(<span class="kw">function</span>(req,res) { ... });
+<span class="ot">server</span>.<span class="fu">listen</span>(<span class="dv">1337</span>, <span class="st">&#39;127.0.0.1&#39;</span>);</code></pre>
+<p>La méthode <code>listen</code> du serveur permet de lancer l'écoute, ici sur le port 1337 de l'hôte 127.0.0.1 <em>(localhost)</em>. Autrement dit, c'est grâce à cette méthode qu'on lance notre serveur.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">function</span> (req, res) {
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/plain&#39;</span>});
+    <span class="ot">res</span>.<span class="fu">end</span>(<span class="st">&#39;Hello World</span><span class="ch">\n</span><span class="st">&#39;</span>);
+}</code></pre>
+<p>La fonction qui est passée en paramètre à <em>createServer</em> est celle qui sera appelée à chaque requête sur notre serveur. Elle prend elle-même deux paramètres : la requête (<code>req</code>) et la réponse (<code>res</code>). (Nous aurions pu appeler les paramètres autrement évidemment, le principal étant qu'ils soient là, et qu'ils soient deux.)</p>
+<ul>
+<li>La <em>requête</em> est un objet permettant d'accéder aux détails sur la requête envoyée au serveur : en-têtes HTTP, paramètres GET ou POST, etc. Nous ne l'utilisons pas ici.</li>
+<li>La <em>réponse</em> est l'objet qui nous permet d'envoyer une réponse à la requête. Dans notre cas, nous effectuons deux actions sur cette réponse :
+<ul>
+<li>Nous définissons l'en-tête HTTP <em>Content-type</em> à _text__/plain_, ce qui permet d'indiquer que le contenu que nous renvoyons est de type texte. Il pourrait être <em>text/html</em>, <em>application/json</em>, bref ce que l'on veut tant qu'il s'agit d'un type MIME standard ;</li>
+<li>Nous terminons la requête en envoyant le texte <em>Hello World</em> (suivi d'un retour à la ligne, qui n'est pas indispensable ici).</li>
+</ul></li>
+</ul>
+<p>Note sur les fonctions callbacks : il est très fréquent de voir avec Node.js des fonctions qui prennent d'autres fonctions en paramètres. Le principe est généralement de passer en paramètre à une fonction, une seconde fonction à exécuter lorsque la première est terminée. Cette seconde fonction est généralement désignée par le terme de <em>callback</em>. Par exemple :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> f1 = <span class="kw">function</span>(callback) {
+    <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;Première fonction...&quot;</span>);
+    <span class="fu">callback</span>(<span class="st">&quot;test&quot;</span>);
+};
+<span class="kw">var</span> f2 = <span class="kw">function</span>(resultat) {
+    <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;Résultat : &quot;</span> +resultat);
+}
+
+<span class="fu">f1</span>(f2);
+<span class="co">// Sortie :</span>
+<span class="co">// Première fonction...</span>
+<span class="co">// Résultat : test</span></code></pre>
+<p>Dans la dernière ligne, la fonction <code>console.log</code> permet d'afficher un message dans la console (la sortie de la ligne de commande), ce qui nous sert ici à indiquer que le serveur a bien démarré :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Server running at http://127.0.0.1:1337/&#39;</span>);</code></pre>
+<h3 id="en-résumé"><a href="#en-résumé">2.3.3 En résumé</a></h3>
+<p>Pour créer notre serveur web, nous avons :</p>
+<ul>
+<li>inclut le module <em>http</em> avec la fonction <code>require</code> ;</li>
+<li>créé un serveur HTTP avec la méthode <code>createServer</code>, en lui fournissant une fonction plaçant le texte <em>Hello World</em> dans la réponse renvoyée à chaque requête ;</li>
+<li>mis le serveur en écoute sur le port 1337 ;</li>
+<li>indiqué dans la console que le serveur était lancé.</li>
+</ul>
+<p>Magique non ? Pour terminer ce chapitre consacré aux bases de Node.js, étudions un exemple légèrement plus complexe…</p>
+<h2 id="un-exemple-plus-complexe..."><a href="#un-exemple-plus-complexe...">2.4 Un exemple plus complexe...</a></h2>
+<p>Dans cette partie nous allons raffiner le petit serveur web créé précédemment en ajoutant quelques fonctionnalités. Nous allons imaginer une application très simple, demandant à l'utilisateur son prénom, pour le saluer personnellement ensuite. Il ne s'agit pas ici de vendre ce concept révolutionnaire aux grands noms du web, mais d'illustrer plusieurs fonctionnalités offertes par Node.js :</p>
+<ul>
+<li>Récupérer et utiliser les paramètres GET passés à la requête ;</li>
+<li>Lire un fichier HTML local et le renvoyer au navigateur ;</li>
+<li>Renvoyer du contenu structuré en JSON.</li>
+</ul>
+<p>Notre application se constituera d'un formulaire contenant un champ invitant l'utilisateur à saisir son nom. Un clic sur le bouton OK lancera un appel AJAX, qui recevra en réponse un message adapté au nom de l'utilisateur. Le message sera affiché sur la page.</p>
+<h3 id="une-page-html"><a href="#une-page-html">2.4.1 Une page HTML</a></h3>
+<p>Tout d'abord, nous aurons besoin d'un fichier HTML classique contenant un formulaire, permettant à l'utilisateur de saisir son nom : (appelons le <em>hello02.html</em>, nous l'utiliserons ensuite).</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript">&lt;input type=<span class="st">&quot;text&quot;</span> placeholder=<span class="st">&quot;Enter your name&quot;</span> id=<span class="st">&quot;name&quot;</span><span class="ot">/&gt;</span>
+<span class="ot">&lt;input type=&quot;button&quot; value=&quot;OK&quot; onclick=&quot;valid</span><span class="fl">()</span><span class="ot">&quot;/</span>&gt;
+&lt;div id=<span class="st">&quot;message&quot;</span>&gt;&lt;<span class="ot">/div&gt;</span>
+<span class="ot">&lt;script src=&quot;http://code.jquery.com/jquery</span><span class="fl">-1.10.1</span>.<span class="ot">min</span>.<span class="fu">js</span><span class="st">&quot;&gt;&lt;/script&gt;</span>
+&lt;script&gt;
+<span class="kw">function</span> <span class="fu">valid</span>() {
+    <span class="ot">$</span>.<span class="fu">get</span>(<span class="st">&#39;&#39;</span>, { <span class="dt">name</span>: <span class="fu">$</span>(<span class="st">&#39;#name&#39;</span>).<span class="fu">val</span>() }, <span class="kw">function</span>(data) {
+        <span class="fu">$</span>(<span class="st">&#39;#message&#39;</span>).<span class="fu">html</span>(<span class="ot">data</span>.<span class="fu">message</span>);
+    }, <span class="st">&#39;json&#39;</span>);
+}
+&lt;<span class="ot">/script&gt;</span></code></pre>
+<p>Passons sur la validité HTML de ce code, seul le nécessaire s'y trouve. Tout d'abord un champ texte <code>name</code>, puis un bouton <em>OK</em> qui lorsque l'on clique dessus appelle la fonction <code>valid()</code> définie ensuite. On utilise <em>jQuery</em> pour réaliser un appel AJAX. Le script passé en premier paramètre à <code>$.get</code> est vide, ce qui indique au navigateur d'appeler la page sur laquelle on se trouve.</p>
+<p>Si vous ouvrez la page dans votre navigateur et que vous remplissez le champ et cliquez sur le bouton, vous pourrez à l'aide d'un outil comme Firebug ou les outils de développement Chrome visualiser la requête qui est envoyée via Ajax : <em>file:///.../hello02.html?name=Paul</em>.</p>
+<p>Pas de Node.js ici, mais ne vous inquiétez pas, ça arrive !</p>
+<h3 id="le-script-node.js"><a href="#le-script-node.js">2.4.2 Le script Node.js</a></h3>
+<p>Le script Node de notre application a deux utilités :</p>
+<ul>
+<li>afficher notre fichier HTML lorsqu'aucun paramètre ne lui est passé ;</li>
+<li>répondre à l'appel AJAX par une réponse JSON.</li>
+</ul>
+<p>Voici le code source du script :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> http = <span class="fu">require</span>(<span class="st">&#39;http&#39;</span>);
+<span class="kw">var</span> url = <span class="fu">require</span>(<span class="st">&#39;url&#39;</span>);
+<span class="kw">var</span> fs = <span class="fu">require</span>(<span class="st">&#39;fs&#39;</span>);
+
+<span class="kw">var</span> server = <span class="ot">http</span>.<span class="fu">createServer</span>(<span class="kw">function</span> (req, res) {
+    <span class="kw">var</span> url_parts = <span class="ot">url</span>.<span class="fu">parse</span>(<span class="ot">req</span>.<span class="fu">url</span>, <span class="kw">true</span>);
+    <span class="kw">var</span> name = <span class="ot">url_parts</span>.<span class="ot">query</span>.<span class="fu">name</span>;
+    <span class="kw">if</span> (name) {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Name: &#39;</span> +name);
+        <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
+        <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> +name + <span class="st">&#39;!&#39;</span>}));
+    } <span class="kw">else</span> {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Noname!&#39;</span>);
+        <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/html&#39;</span>});
+        <span class="ot">fs</span>.<span class="fu">readFile</span>(<span class="st">&#39;hello02.html&#39;</span>,<span class="kw">function</span> (err,data) {
+            <span class="ot">res</span>.<span class="fu">end</span>(data);
+        });
+    }
+}).<span class="fu">listen</span>(<span class="dv">1337</span>, <span class="st">&#39;127.0.0.1&#39;</span>);
+
+<span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Server running at http://127.0.0.1:1337/&#39;</span>);</code></pre>
+<p>De la même manière que pour l'exemple précédent, analysons en détail le contenu de ce script.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> http = <span class="fu">require</span>(<span class="st">&#39;http&#39;</span>);
+<span class="kw">var</span> url = <span class="fu">require</span>(<span class="st">&#39;url&#39;</span>);
+<span class="kw">var</span> fs = <span class="fu">require</span>(<span class="st">&#39;fs&#39;</span>);</code></pre>
+<p>Nous avions déjà vu le module <em>http</em>, nous utilisons ici en plus les modules <em>url</em> et <em>fs</em> (également inclus avec Node), permettant respectivement d'analyser une URL avec ses paramètres, et de lire un fichier sur le serveur local. Nous allons voir un peu plus bas l'utilisation de ces deux modules.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> url_parts = <span class="ot">url</span>.<span class="fu">parse</span>(<span class="ot">req</span>.<span class="fu">url</span>, <span class="kw">true</span>);
+<span class="kw">var</span> name = <span class="ot">url_parts</span>.<span class="ot">query</span>.<span class="fu">name</span>;
+<span class="kw">if</span> (name) {
+    ...
+} <span class="kw">else</span> {
+    ...
+}</code></pre>
+<p>La première chose que nous faisons dans la fonction donnée à <code>createServer</code> est de récupérer l'URL appelée, et de la décomposer grâce à la méthode <code>parse</code> du module <em>url</em>. Nous récupérons un objet dont la propriété <code>query</code> contient ici les paramètres GET. Celui qui nous intéresse est ici le paramètre <code>name</code>.</p>
+<p>Autrement dit, si dans notre navigateur nous appelons l'URL <em>http://127.0.0.1:1337/?name=Jacques</em>, notre variable name contiendra la chaîne « Jacques ».</p>
+<p>En fonction de la présence ou non de ce paramètre, nous allons adopter deux comportements différents.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;No name!&#39;</span>);
+<span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/html&#39;</span>});
+<span class="ot">fs</span>.<span class="fu">readFile</span>(<span class="st">&#39;hello02.html&#39;</span>, <span class="kw">function</span> (err,data) {
+    <span class="ot">res</span>.<span class="fu">end</span>(data);
+});</code></pre>
+<p>Dans le cas où aucun nom n'est fourni (on appelle l'URL sans paramètre), on commence par afficher le message « No name! » dans la console. Puis on définit le contenu de la réponse HTTP comme de type « text/html », c'est à dire une page HTML classique.</p>
+<p>Puis on fait appel à la méthode <code>readFile</code> du module <em>fs</em> qui nous permet de lire un fichier local, ici <em>hello02.html</em>, le fichier que nous avons créé précédemment et contenant le formulaire. On peut voir que le deuxième paramètre de cette méthode est une fonction, appelée lorsque le fichier a été lu. Son contenu y est passé dans le paramètre <code>data</code>.</p>
+<p>Dit simplement : s'il n'y a pas de nom fourni, on renvoie le contenu du fichier <em>hello02.html</em>.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Name: &#39;</span> + name);
+<span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
+<span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> + name + <span class="st">&#39;!&#39;</span>}));</code></pre>
+<p>Dans le cas où un nom est fourni, on ne renvoie plus le formulaire HTML, mais une réponse structurée, codée en JSON. On définit donc le <em>Content-type</em> à <em>application/json</em>, puis on renvoie notre objet <code>{ message: 'Hello Jean' }</code> que l'on code en JSON via la méthode <code>JSON.stringify</code> (fournie par Node.js).</p>
+<h3 id="en-résumé-1"><a href="#en-résumé-1">2.4.3 En résumé</a></h3>
+<p>Dans ce deuxième exemple, nous avons vu :</p>
+<ul>
+<li>comment utiliser le module <em>url</em> pour analyser une URL et récupérer un paramètre GET ;</li>
+<li>comment lire un fichier HTML et le renvoyer en réponse afin d'afficher notre formulaire ;</li>
+<li>comment renvoyer une réponse structurée (en JSON) afin que celle-ci soit analysée lors d'un appel AJAX.</li>
+</ul>
+<p>J'espère vous avoir convaincu avec ces deux exemples de la simplicité et de la concision de Node.js. Dans la suite du livre je vous présenterai des fonctionnalités plus avancées offertes par Node.js. Et dans le chapitre suivant, nous verrons comment créer un site ou une application web en structurant un peu mieux notre code.</p>
+<h1 id="chapitre-3-un-site-web-bien-architecturé-avec-express"><a href="#chapitre-3-un-site-web-bien-architecturé-avec-express">Chapitre 3 : Un site web bien architecturé avec Express</a></h1>
+<p>Lorsque l'on crée un site ou une application web, il est nécessaire que celui /celle-ci soit bien architecturé(e). C'est justement le but d'un framework. À l'instar des « gros » frameworks comme Symfony et Ruby On Rails, Express permet d'organiser votre application web en fonction des requêtes qu'elle est censée recevoir. Vous l'aurez compris, contrairement aux autres frameworks cités précédemment, Express reste dans la philosophie de Node.js en étant léger et très simple à mettre en œuvre.</p>
+<h2 id="installation-de-express"><a href="#installation-de-express">3.1 Installation de Express</a></h2>
+<p>Contrairement à <em>http</em> ou <em>url</em> que nous avons utilisés précédemment, Express (qui se constitue principalement du module <em>express</em>) ne fait pas partie de la distribution de base de Node.js. Pour l'inclure à notre application, il suffit de suivre la procédure suivante :</p>
+<ul>
+<li>Se rendre en ligne de commande dans le répertoire de notre application (répertoire vierge ou répertoire utilisé pour les exemples précédents) ;</li>
+<li>Utiliser le gestionnaire de paquets de Node.js <em>npm</em> grâce à la commande : <code>npm install express</code></li>
+</ul>
+<p>La commande va télécharger le module <em>express</em> ainsi que tous les modules dont il dépend (et ils sont nombreux). Si tout se passe bien, vous devez remarquer l'apparition d'un répertoire <em>node</em>modules_ dans votre répertoire courant.</p>
+<p>Note sur les modules : vous le comprendrez rapidement : la philosophie des modules de Node est un module = une utilité. Autrement dit, un module n'accomplit en général qu'une tâche précise. C'est l'utilisation conjointe de plusieurs modules qui permet de générer des applications (ou modules) plus complexes.</p>
+<h2 id="une-application-basique-avec-express"><a href="#une-application-basique-avec-express">3.2 Une application basique avec Express</a></h2>
+<p>Afin d'en découvrir le fonctionnement de base, je vous propose de reprendre notre application révolutionnaire du chapitre précédent, celle qui demande son nom à l'utilisateur pour le saluer ensuite.</p>
+<p>Voici pour rappel le code principal de l'application telle que nous l'avons écrit :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> url_parts = <span class="ot">url</span>.<span class="fu">parse</span>(<span class="ot">req</span>.<span class="fu">url</span>, <span class="kw">true</span>);
+<span class="kw">var</span> name = <span class="ot">url_parts</span>.<span class="ot">query</span>.<span class="fu">name</span>;
+<span class="kw">if</span> (name) {
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
+    <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> +name + <span class="st">&#39;!&#39;</span>}));
+} <span class="kw">else</span> {
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/html&#39;</span>});
+    <span class="ot">fs</span>.<span class="fu">readFile</span>(<span class="st">&#39;hello02.html&#39;</span>, <span class="kw">function</span> (err,data) {
+        <span class="ot">res</span>.<span class="fu">end</span>(data);
+    });
+}</code></pre>
+<p>On voit que les différents cas de figure qui peuvent se présenter sont distingués par un <em>if</em>. Ici nous n'en avons que deux, mais si nous devions traiter dix types de requêtes différents, le programme deviendrait vite illisible… C'est alors que l'usage d'un <em>routeur</em> va nous simplifier la vie.</p>
+<p>Plongeons au cœur du sujet, voici le code de la version de notre programme utilisant Express :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> express =<span class="fu">require</span>(<span class="st">&#39;express&#39;</span>);
+<span class="kw">var</span> fs = <span class="fu">require</span>(<span class="st">&#39;fs&#39;</span>);
+<span class="kw">var</span> app = <span class="fu">express</span>();
+
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/&#39;</span>,<span class="kw">function</span>(req, res) {
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/html&#39;</span>});
+    <span class="ot">fs</span>.<span class="fu">readFile</span>(<span class="st">&#39;express01.html&#39;</span>, <span class="kw">function</span> (err,data) {
+        <span class="ot">res</span>.<span class="fu">end</span>(data);
+    });
+});
+
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/hello/:name&#39;</span>, <span class="kw">function</span>(req,res) {
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
+    <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> + <span class="ot">req</span>.<span class="ot">params</span>.<span class="fu">name</span> + <span class="st">&#39;!&#39;</span>}));
+});
+
+<span class="ot">app</span>.<span class="fu">listen</span>(<span class="dv">8080</span>);</code></pre>
+<p>À première vue, et même sans connaître le fonctionnement d'Express, le code semble déjà plus « aéré ».</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> express = <span class="fu">require</span>(<span class="st">&#39;express&#39;</span>);
+<span class="kw">var</span> fs = <span class="fu">require</span>(<span class="st">&#39;fs&#39;</span>);
+<span class="kw">var</span> app = <span class="fu">express</span>();</code></pre>
+<p>On inclut comme d'habitude les modules que l'on va utiliser. Nous avons déjà vu le module <em>fs</em> permettant de lire un fichier ; le module <em>express</em> s'inclut de la même manière pour créer la fonction express() qui sert à créer notre application app. Cette application est l'objet global que nous utiliserons pour configurer les actions à effectuer en fonction de la requête.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/&#39;</span>, <span class="kw">function</span>(req, res){
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/html&#39;</span>});
+    <span class="ot">fs</span>.<span class="fu">readFile</span>(<span class="st">&#39;express01.html&#39;</span>, <span class="kw">function</span> (err,data) {
+        <span class="ot">res</span>.<span class="fu">end</span>(data);
+    });
+});</code></pre>
+<p>La méthode get de l'objet app nous permet ici de définir le comportement lorsque c'est l'URL <em>http://localhost:8080/</em> qui est appelée, autrement dit la racine (/) de notre site. Le contenu de la fonction qu'elle prend en deuxième paramètre est strictement identique à celui vu au chapitre précédent : on lit le fichier <em>express01.html</em> et on le renvoie.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/hello/:name&#39;</span>, <span class="kw">function</span>(req,res) {
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
+    <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> + <span class="ot">req</span>.<span class="ot">params</span>.<span class="fu">name</span> + <span class="st">&#39;!&#39;</span>}));
+});</code></pre>
+<p>Le deuxième cas de figure est plus intéressant. On gère ici le cas où l'URL est de la forme <code>/hello/:name</code>. La partie <code>:name</code> correspond ici à un paramètre, c'est à dire à une valeur qui pourra être remplacée par n'importe quoi. Par exemple, si l'on appelle l'URL <em>http://localhost:8080/hello/Jean</em>, c'est cette fonction qui sera utilisée.</p>
+<p>Le plus intéressant avec ce paramètre est évidemment qu'il est possible de récupérer sa valeur. C'est ce qui est fait lorsque l'on renvoie le contenu en JSON, via <code>req.params.name</code>. C'est tout de même beaucoup plus simple que de récupérer l'URL, de la décomposer avec le module <em>url</em>, et d'adapter le comportement en fonction de la présence ou non du paramètre <code>name</code> !</p>
+<p>Bien évidemment, les fonctionnalités proposées par Express vont bien au-delà de cela, continuons notre exploration avec une fonction dont tout webmaster un minimum rigoureux a besoin : les templates.</p>
+<h2 id="utiliser-des-templates"><a href="#utiliser-des-templates">3.3 Utiliser des templates</a></h2>
+<p>Si vous avez déjà développé un site web, vous connaissez sans doute le principe des templates. Le but est d'écrire la vue (traditionnellement du HTML) séparément du code métier. Dans l'idéal, un webdesigner ne connaissant pas du tout le code métier (qu'il soit JavaScript, PHP, Ruby…) doit être capable d'écrire le template.</p>
+<p>Concrètement, un langage de template se caractérise par deux fonctions principales :</p>
+<ul>
+<li>la substitution de variables : remplacer par exemple « Bonjour #{name} » par « Bonjour Jean » si la variable <code>name</code> vaut « Jean » ;</li>
+<li>l'utilisation de structures conditionnelles et de boucles, dépendant notamment des variables données en paramètre.</li>
+</ul>
+<p>Les moteurs de template les plus avancés proposent des fonctions bien plus évoluées comme l'application de fonctions aux valeurs affichées, de l'héritage de templates, etc.</p>
+<p>Il existe plusieurs moteurs de templates utilisables avec Node.js ; j'ai choisi de vous présenter <em>Jade</em>, d'une part parce qu'Express permet de l'utiliser très facilement, et d'autre part parce qu'il dispose d'une syntaxe un peu particulière mais très efficace.</p>
+<h3 id="présentation-du-moteur-de-template-jade"><a href="#présentation-du-moteur-de-template-jade">3.3.1 Présentation du moteur de template Jade</a></h3>
+<p>Le moteur de template Jade permet typiquement de générer une page HTML, mais sa particularité est que les templates proprement dits ne sont pas écrits en HTML.</p>
+<p>Commençons avec un exemple de template Jade, celui que nous allons utiliser par la suite. Il s'agit quasiment du même exemple que celui vu précédemment, à l'exception qu'ici nous allons donner le choix à l'utilisateur entre plusieurs prénoms. (Révolutionnaire, non ?)</p>
+<pre class="jade"><code>!!!
+html
+    head
+        title= theTitle
+    body
+        div Choisir un prénom :
+        - for name in theNames  
+            label
+                input(type=&quot;radio&quot;,name=&quot;name&quot;,value=name)
+                span Prénom : #{name}
+            br
+        div
+            input(type=&quot;button&quot;,onclick=&quot;valid()&quot;,value=&quot;OK&quot;)
+            #message
+        script(src=&quot;http://code.jquery.com/jquery-1.10.1.min.js&quot;)
+        script.
+            function valid() {
+                $.get(&#39;/hello/&#39; + $(&#39;[name=name]:checked&#39;).val(), function(data) {
+                    $(&#39;#message&#39;).html(data.message);
+                }, &#39;json&#39;);
+            }</code></pre>
+<p>Comme vous pouvez le remarquer, ça a le goût et l'odeur du HTML, mais ça n'en est pas. Les balises type XML ont disparu au profit d'une organisation à base d'indentation.</p>
+<p>Analysons pas à pas le contenu de ce template.</p>
+<pre class="jade"><code>!!!</code></pre>
+<p>La première instruction !!! sert à insérer la déclaration du <em>doctype</em> de notre page (celui de HTML5 par défaut). Le code généré sera <!DOCTYPE html>.</p>
+<pre class="jade"><code>html
+    head
+        title= theTitle</code></pre>
+<p>Le document débute ensuite avec la déclaration de notre balise <code>html</code>, puis de sa balise <code>head</code>. Vous l'avez compris, pour déclarer une balise avec Jade (<code>html</code>, <code>a</code>, <code>p</code>, etc.), on commence la ligne avec le nom de la balise.</p>
+<p>Notre balise <code>title</code> a une petite particularité : on a écrit <code>title=</code> et non title. Cela indique à Jade que le contenu de la balise n'est pas le texte qui suit, mais le contenu de la variable dont le nom est indiqué, ici <code>theTitle</code>, que nous donnerons un peu plus tard à Jade pour qu'il génère le HTML.</p>
+<p>Si on avait voulu déclarer un titre statique (ne dépendant pas d'une variable), on aurait pu écrire : <code>title Hello!</code>.</p>
+<pre class="jade"><code>body
+    div Choisir un prénom :</code></pre>
+<p>Nous attaquons ensuite le corps de la page avec la balise <code>body</code>. Son premier élément est une balise <code>div</code>, dont le contenu est « Choisir un prénom ».</p>
+<pre class="jade"><code>- for name in theNames  
+    label
+        input(type=&quot;radio&quot;,name=&quot;name&quot;,value=name)
+        span Prénom : #{name}
+    br</code></pre>
+<p>Nouvelle instruction particulière ensuite, la ligne commence par le symbole <code>-</code> (tiret haut). Cela indique à Jade qu'il s'agit d'une instruction conditionnelle ou de boucle, ici <code>for</code>. Sa syntaxe est relativement similaire à ce que l'on voit dans d'autres langages : <code>- for var element in tableau</code> permet de parcourir les éléments du tableau en définissant à chaque itération la variable <code>element</code>.</p>
+<p>Dans notre exemple le tableau à parcourir est <code>theNames</code>, variable que nous allons fournir à Jade pour la génération, comme pour <code>theTitle</code> vue plus haut.</p>
+<p>Donc pour chaque élément de <code>theNames</code>, nous allons générer une balise <code>label</code>, qui contiendra elle-même deux balises, un bouton-radio et un libellé.</p>
+<p>Le bouton radio (en HTML <code>&lt;input type=&quot;radio&quot;...</code>) possède trois attributs qui sont définis dans Jade à l'aide de parenthèses. Notez que pour les attributs <code>type</code> et <code>name</code> les valeurs sont entre guillemets doubles car elles sont statiques. En revanche, <code>value=name</code> indique que Jade soit substituer <code>name</code> par la valeur de la variable <code>name</code>.</p>
+<p>Le libellé est déclaré par l'instruction <code>span Prénom : #{name}</code>. Si nous avions voulu que le libellé soit simplement le prénom à choisir, nous aurions écrit <code>span= name</code>. Mais la syntaxe que nous utilisons ici permet d'intégrer le contenu de la variable au sein de contenu statique. Ici, <code>#{name}</code> sera substitué par la valeur de la variable <code>name</code>.</p>
+<pre class="jade"><code>script(src=&quot;http://code.jquery.com/jquery-1.10.1.min.js&quot;)
+script.
+    function valid() {
+        $.get(&#39;/hello/&#39; + $(&#39;[name=name]:checked&#39;).val(), function(data) {
+            $(&#39;#message&#39;).html(data.message);
+        }, &#39;json&#39;);
+    }</code></pre>
+<p>Rien de plus à dire ici, si ce n'est l'utilisation de la balise <code>script.</code>, avec le point à la fin. Cette syntaxe, utilisée avec les balises <code>script</code> et <code>style</code> permet d'indiquer à Jade qu'il ne faut pas interpréter le contenu de la balise (le JavaScript et le CSS ne sont en effet pas soumis à l'interprétation de Jade).</p>
+<p>Voilà pour ce qui est de notre petite introduction à Jade. Ses possibilités vont bien au-delà de ce qui a été présenté, mais cela devrait suffire pour comprendre la suite, notamment l'utilisation de templates avec Node.js en général, et plus spécifiquement avec Express. J'espère aussi que cela vous a donné envie d'aller plus loin dans la découverte de Jade ; la syntaxe est déroutante, mais dès que les fichiers deviennent conséquents la maintenance est beaucoup plus aisée que pour du HTML classique.</p>
+<p>Voyons maintenant comment utiliser ce template au sein de notre application Express.</p>
+<h3 id="utiliser-jade-avec-express"><a href="#utiliser-jade-avec-express">3.3.2 Utiliser Jade avec Express</a></h3>
+<p>La première chose à faire est d'installer le module Jade, comme nous l'avons fait avec Express :</p>
+<pre class="sh"><code>$ npm install jade</code></pre>
+<p>À présent, le code de notre programme révolutionnaire, qui s'est encore un peu simplifié :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> express =<span class="fu">require</span>(<span class="st">&#39;express&#39;</span>);
+<span class="kw">var</span> fs = <span class="fu">require</span>(<span class="st">&#39;fs&#39;</span>);
+<span class="kw">var</span> app = <span class="fu">express</span>();
+
+<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;viewengine&#39;</span>, <span class="st">&#39;jade&#39;</span>);
+<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;views&#39;</span>, __dirname);
+
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/&#39;</span>,<span class="kw">function</span>(req, res) {
+    <span class="ot">res</span>.<span class="fu">render</span>(<span class="st">&#39;express02&#39;</span>, {<span class="dt">title</span>: <span class="st">&#39;Hello&#39;</span>, <span class="dt">names</span>: [ <span class="st">&#39;Pierre&#39;</span>, <span class="st">&#39;Paul&#39;</span>, <span class="st">&#39;Jacques&#39;</span> ] });
+});
+
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/hello/:name&#39;</span>, <span class="kw">function</span>(req,res){
+    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
+    <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> + <span class="ot">req</span>.<span class="ot">params</span>.<span class="fu">name</span> + <span class="st">&#39;!&#39;</span>}));
+});
+
+<span class="ot">app</span>.<span class="fu">listen</span>(<span class="dv">8080</span>);</code></pre>
+<p>Première remarque : il n'est pas nécessaire d'inclure le module <em>jade</em> avec une instruction <code>require</code>. Express s'en charge lorsque nous déclarons le moteur de template que nous souhaitons utiliser :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;view engine&#39;</span>, <span class="st">&#39;jade&#39;</span>);
+<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;views&#39;</span>, __dirname);</code></pre>
+<p>La deuxième instruction sert ici à déclarer que nos templates se trouvent dans le même répertoire que les sources du programme (<code>__dirname</code>). Il va de soi que pour un programme plus conséquent il est judicieux d'avoir un répertoire (voire une arborescence) dédié aux templates.</p>
+<p>La seule différence ensuite, par rapport à la version précédente, est cette ligne :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">res</span>.<span class="fu">render</span>(<span class="st">&#39;express02&#39;</span>, { <span class="dt">title</span>: <span class="st">&#39;Hello&#39;</span>, <span class="dt">names</span>: [ <span class="st">&#39;Pierre&#39;</span>, <span class="st">&#39;Paul&#39;</span>, <span class="st">&#39;Jacques&#39;</span> ] });</code></pre>
+<p>Nous indiquons ici à Express qu'il doit :</p>
+<ul>
+<li>utiliser le template <em>express02</em> : pour cela il va chercher le fichier <em>express02.jade</em> dans le répertoire courant comme nous le lui avons indiqué ;</li>
+<li>lui passer en paramètres les données <code>title</code> et <code>names</code>, la première étant une chaîne et la deuxième un tableau.</li>
+</ul>
+<p>Le tout en une ligne ! Si vous lancez le programme et appelez l'URL <em>http://localhost:8080/</em>, vous pourrez observer une page dont le titre est « Hello » (variable <code>title</code>), et contenant trois boutons radio, un pour chaque prénom que nous avons mis dans la variable <code>names</code>.</p>
+<p>Maintenant que nous avons découvert les bases d'Express et de Jade, voyons comment Express peut nous simplifier la tâche dans le cadre d'applications plus complexes, composées de plusieurs pages.</p>
+<h2 id="une-application-express-plus-complexe"><a href="#une-application-express-plus-complexe">3.4 Une application Express plus complexe</a></h2>
+<p>Nous avons vu dans les parties précédentes comment créer une application minimaliste avec Express. Mais que se passe-t-il lorsque votre application (ou site) est composée de plusieurs pages par exemple ? Il est alors nécessaire d'organiser les sources de manière à ce que l'ensemble reste lisible et maintenable. Pour cela, Express peut nous rendre service en créant automatiquement une belle arborescence. Cela nous fait gagner du temps, mais permet surtout de comprendre les bonnes pratiques concernant l'organisation d'une application constituée de plusieurs scripts, templates, etc.</p>
+<p>Pour cela, il est d'abord nécessaire d'installer le module <em>express</em>, mais de manière <em>globale</em>, c'est à dire de sorte à rendre ce module utilisable par n'importe quelle application Node.js sur le système, et non juste pour l'application du répertoire courant. Cela se fait par la commande :</p>
+<pre class="sh"><code>npm install -g express</code></pre>
+<p>En tapant ensuite la commande <code>express</code>, vous pourrez vérifier si le module a bien été installé.</p>
+<p>Pour créer ensuite un projet Express, rendez-vous en ligne de commande dans le répertoire parent qui accueillera votre répertoire projet, puis tapez la commande :</p>
+<pre class="sh"><code>express express03</code></pre>
+<p>(<code>express03</code> est ici le nom à donner au projet.) Express a donc créé un répertoire <em>express03</em>, dont l'arborescence contient des sources et plusieurs répertoires :</p>
+<ul>
+<li><em>public/</em> : contient les fichiers 'ressources' de l'application web : CSS, JavaScript client, images, etc. ;</li>
+<li><em>routes/</em> : contient les <em>routes</em>, c'est à dire les sous-modules de notre application ;</li>
+<li><em>views/</em> : contient les vues de notre application, c'est à dire les modèles Jade ;</li>
+<li><em>app.js</em> : le point d'entrée de l'application ;</li>
+<li><em>package.json</em> : fichier contenant les méta-données de l'application, les dépendances, etc.</li>
+</ul>
+<p>Premier fichier intéressant, le fichier <em>package.json</em>.</p>
+<pre class="sourceCode json"><code class="sourceCode json">{
+    <span class="dt">&quot;name&quot;</span>: <span class="st">&quot;application-name&quot;</span>,
+    <span class="dt">&quot;version&quot;</span>: <span class="st">&quot;0.0.1&quot;</span>,
+    <span class="dt">&quot;private&quot;</span>: <span class="dv">true</span>,
+    <span class="dt">&quot;scripts&quot;</span>: {
+        <span class="dt">&quot;start&quot;</span>: <span class="st">&quot;node app.js&quot;</span>
+    },
+    <span class="dt">&quot;dependencies&quot;</span>: {
+        <span class="dt">&quot;express&quot;</span>: <span class="st">&quot;3.4.0&quot;</span>,
+        <span class="dt">&quot;jade&quot;</span>: <span class="st">&quot;*&quot;</span>
+    }
+}</code></pre>
+<p>Il permet d'y placer les métadonnées concernant notre application : le nom, l'auteur, la version, etc. Cela peut être très utile si vous décidez de distribuer votre application. Mais ces données ne servent pas « qu'à faire joli » : le bloc <code>dependencies</code> permet d'indiquer les dépendances de votre application, autrement dit les modules requis pour la faire fonctionner. Ici, nous avons besoin du module <em>express</em> en version 3.4.0, et du module <em>jade</em>, dans la dernière version disponible.</p>
+<p>Afin d'installer automatiquement les dépendances de l'application en se basant sur les informations du <em>package.json</em>, tapez la commande :</p>
+<pre class="sh"><code>$ npm install</code></pre>
+<p>Nous reviendrons en détail sur les possibilités offertes par ce fichier dans le chapitre 5.</p>
+<p>Analysons à présent le contenu du fichier principal : <em>app.js</em>.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> express = <span class="fu">require</span>(<span class="st">&#39;express&#39;</span>);
+<span class="kw">var</span> routes = <span class="fu">require</span>(<span class="st">&#39;./routes&#39;</span>);
+<span class="kw">var</span> user = <span class="fu">require</span>(<span class="st">&#39;./routes/user&#39;</span>);
+<span class="kw">var</span> http = <span class="fu">require</span>(<span class="st">&#39;http&#39;</span>);
+<span class="kw">var</span> path = <span class="fu">require</span>(<span class="st">&#39;path&#39;</span>);
+
+<span class="kw">var</span> app = <span class="fu">express</span>();
+<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;port&#39;</span>, <span class="ot">process</span>.<span class="ot">env</span>.<span class="fu">PORT</span> || <span class="dv">3000</span>);
+<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;views&#39;</span>, __dirname + <span class="st">&#39;/views&#39;</span>);
+<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;view engine&#39;</span>, <span class="st">&#39;jade&#39;</span>);
+<span class="ot">app</span>.<span class="fu">use</span>(<span class="ot">express</span>.<span class="fu">static</span>(<span class="ot">path</span>.<span class="fu">join</span>(__dirname, <span class="st">&#39;public&#39;</span>)));
+
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/&#39;</span>, <span class="ot">routes</span>.<span class="fu">index</span>);
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/users&#39;</span>, <span class="ot">user</span>.<span class="fu">list</span>);
+
+<span class="ot">http</span>.<span class="fu">createServer</span>(app).<span class="fu">listen</span>(<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;port&#39;</span>), <span class="kw">function</span>() {
+    <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Express server listening on port &#39;</span> + <span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;port&#39;</span>));
+});</code></pre>
+<p>J'ai volontairement retiré quelques lignes du fichier afin de faciliter l'explication. Globalement peu de nouveautés dans ce fichier. On initialise un objet application (<code>app</code>) dont on configure le port à écouter (<code>app.set('port',...)</code>), le moteur de template (Jade) ainsi que le répertoire où ces templates sont stockés (le sous-répertoire <em>views</em>), et enfin le répertoire des ressources « statiques » (le sous-répertoire <em>public</em>).</p>
+<p>Les trois dernières lignes sont une méthode un peu différente de lancer le serveur par rapport à ce que nous avions vu, mais cela revient globalement au même.</p>
+<p>La nouveauté réside ici dans les lignes suivantes :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> routes = <span class="fu">require</span>(<span class="st">&#39;./routes&#39;</span>);
+<span class="kw">var</span> user = <span class="fu">require</span>(<span class="st">&#39;./routes/user&#39;</span>);
+
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/&#39;</span>,<span class="ot">routes</span>.<span class="fu">index</span>);
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/users&#39;</span>,<span class="ot">user</span>.<span class="fu">list</span>);</code></pre>
+<p>En réalité, nous ne faisons qu'appeler la fonction <code>get</code> comme nous le faisions déjà, mais plutôt que de lui donner la fonction directement lors de l'appel, nous lui donnons une référence vers la fonction déclarée ailleurs. Les fonctions <code>routes.index</code> et <code>user.list</code> sont définies respectivement dans les fichiers <em>routes/index.js</em> et <em>routes/user.js</em>.</p>
+<p>La syntaxe permettant d'inclure des fichiers comme cela est fait ici sera détaillée dans le chapitre 5 consacré à la création de modules. Le contenu des fichiers inclus est très simple :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="co">// routes/index.js</span>
+<span class="ot">exports</span>.<span class="fu">index</span> = <span class="kw">function</span>(req, res){
+    <span class="ot">res</span>.<span class="fu">render</span>(<span class="st">&#39;index&#39;</span>, { <span class="dt">title</span>: <span class="st">&#39;Express&#39;</span> });
+};
+
+<span class="co">// routes/user.js</span>
+<span class="ot">exports</span>.<span class="fu">list</span> = <span class="kw">function</span>(req, res){
+    <span class="ot">res</span>.<span class="fu">send</span>(<span class="st">&quot;respond with a resource&quot;</span>);
+};</code></pre>
+<p>Dans le premier cas, nous appelons le modèle <em>index</em> (situé dans _views/index.jade), et dans le deuxième nous renvoyons un message texte.</p>
+<p>La nouveauté dans cette application réside dans le modèle <em>index.jade</em> :</p>
+<pre class="jade"><code>extends layout
+
+block content
+    h1= title
+    p Welcome to #{title}</code></pre>
+<p>Pas de structure HTML classique ici, seulement deux instructions principales :</p>
+<ul>
+<li><code>extends layout</code> : on déclare que notre modèle index hérite en quelques sortes du modèle <code>layout</code>. Autrement dit, la page sera basée sur le modèle layout ;</li>
+<li><code>block content</code> : partant du template <em>layout</em>, on remplira le bloc content par le contenu inscrit ici (un titre <code>h1</code> et une ligne de texte <code>p</code>).</li>
+</ul>
+<p>Si l'on observe le template <em>layout</em>, on remarque la présence du bloc <em>content</em> (<code>block content</code>) : c'est lui qui sera rempli avec le code contenu dans <em>index.jade</em> :</p>
+<pre class="jade"><code>doctype 5
+html
+    head
+        title= title
+        link(rel=&#39;stylesheet&#39;,href=&#39;/stylesheets/style.css&#39;)
+    body
+        block content</code></pre>
+<p>Nous aurions pu regrouper le tout dans un seul fichier sans faire appel aux <em>blocks</em> de Jade en plaçant le <code>h1</code> et le <code>p</code> directement dans la balise body ; l'intérêt est que lorsqu'on a plusieurs pages, on peut utiliser le même <em>layout</em>, c'est à dire la même architecture, le même design, le même en-tête, etc. de page.</p>
+<h2 id="exercice"><a href="#exercice">3.5 Exercice</a></h2>
+<p>Afin de mettre en pratique ce que nous venons de voir, je vous propose l'exercice suivant :</p>
+<ul>
+<li>reprendre l'exemple que nous venons de voir ;</li>
+<li>ajouter une page accessible à l'adresse <em>/hello</em>, et ayant en commun avec la page d'accueil une barre de menu contenant deux liens : un vers la page d'accueil et un vers la nouvelle page ;</li>
+<li>sur la nouvelle page, ajouter le formulaire que nous avons vu au début du chapitre demandant son nom à l'utilisateur ;</li>
+<li>au clic sur le bouton <em>OK</em> du formulaire, l'application effectuera un appel AJAX à l'URL <em>/hello/sayHello/?name=LePrenomSaisi</em> qui renverra au format JSON un message de salutation, qui sera affiché sur la page.</li>
+</ul>
+<h2 id="en-résumé-2"><a href="#en-résumé-2">3.6 En résumé</a></h2>
+<p>Nous avons vu dans ce chapitre comment créer une application web bien structurée. Encore une fois, l'objectif d'Express (et de Node en général) n'est pas de concurrencer des frameworks comme Symfony ou Ruby on Rails, qui seront beaucoup plus adaptés pour créer des applications complexes.</p>
+<p>Express se montrera en revanche parfaitement adapté pour créer une application proposant des webservices REST, ou encore un petit site vitrine disposant de quelques fonctionnalités dynamiques (formulaire de contact, catalogue de produits, etc.).</p>
+<p>L'un des avantages d'Express est qu'il permet de s'adapter à plusieurs modules de gestion de templates, mais aussi à des modules de test unitaire ou test web, d'accès à des bases de données, etc. Et il faut bien le reconnaître, sa mise en place est tout de même beaucoup plus facile que celle de Symfony !</p>
+<h1 id="chapitre-4-utiliser-des-bases-de-données"><a href="#chapitre-4-utiliser-des-bases-de-données">Chapitre 4 : Utiliser des bases de données</a></h1>
+<p>Dans la plupart des applications que nous développons, il est nécessaire d'avoir un mécanisme de persistance des données, et le moyen le plus robuste et le plus employé est d'utiliser une base de données. Avec Node.js, l'objectif n'est pas de faire appel aux gros systèmes de gestion de base de données comme MySQL ou Oracle (bien que cela soit possible, on préfèrera passer par l'intermédiaire d'une API ou d'un webservice externe pour cela), mais utiliser un système plus souple et plus léger.</p>
+<p>Nous verrons dans ce chapitre deux système fréquemment utilisés avec Node.js. Le premier est <em>SQLite3</em>, dont le principe est de stocker une base dans un fichier, et d'y accéder grâce au langage SQL. Le second, <em>MongoDB</em> est radicalement différent ; les données qui y sont stockées ressemblent étrangement à du format JSON, c'est-à-dire que les données sont organisées hiérarchiquement et non sous forme de tables. Il fait partie de la famille des systèmes de gestion de base de données <em>NoSQL (Not Only SQL)</em>.</p>
+<h2 id="sqlite3"><a href="#sqlite3">4.1 Sqlite3</a></h2>
+<h3 id="présentation-1"><a href="#présentation-1">4.1.1 Présentation</a></h3>
+<p>Créé initialement pour être intégré dans des systèmes de missiles au début des années 2000, SQLite est un système de gestion de bases de données ultraléger dont le principal intérêt est qu'il ne nécessite pas de serveur. Une base de données n'est qu'un fichier stocké localement. Notamment, il n'y a pas de gestion d'utilisateurs : si un programme a le droit d'accéder au fichier, alors il peut accéder à la base de données.</p>
+<p>Cela rend SQLite relativement facile à prendre en main et à maintenir. Son utilisation principale n'est pas la gestion de grosses base de données métier, on réservera cela aux gros MySQL, Oracle, SQL Server… Mais il est extrêmement utilisé par exemple pour stocker des données de configuration, ou encore des données mises en cache, pour soulager la base de données principale d'un gros système. Notamment, SQLite est extrêmement utilisé dans les applications mobiles (iPhone notamment) : on imagine mal un serveur MySQL tourner sur un mobile, mais une base de données SQLite permet un accès plus facile aux données stockées que si elles l'étaient dans des fichiers.</p>
+<p>L'utilisation de SQLite avec Node.js se fait avec le module <em>sqlite3</em> : <code>npm install sqlite3</code>. Rien à installer à part ça, SQLite ne requiert pas de serveur !</p>
+<h3 id="premier-exemple"><a href="#premier-exemple">4.1.2 Premier exemple</a></h3>
+<p>Une fois le module installé, passons à un exemple très simple :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> sqlite3 = <span class="fu">require</span>(<span class="st">&#39;sqlite3&#39;</span>);
+
+<span class="kw">var</span> db = <span class="kw">new</span> <span class="ot">sqlite3</span>.<span class="fu">Database</span>(<span class="st">&#39;:memory:&#39;</span>);
+
+<span class="ot">db</span>.<span class="fu">serialize</span>(<span class="kw">function</span>() {
+    <span class="ot">db</span>.<span class="fu">run</span>(<span class="st">&quot;create table users (login, name)&quot;</span>);
+
+    <span class="kw">var</span> stmt = <span class="ot">db</span>.<span class="fu">prepare</span>(<span class="st">&quot;insert into users values (?, ?)&quot;</span>);
+    <span class="kw">var</span> users = [ { <span class="dt">login</span>: <span class="st">&#39;pierre&#39;</span>,  <span class="dt">name</span>: <span class="st">&#39;Pierre&#39;</span> },
+                  { <span class="dt">login</span>: <span class="st">&#39;paul&#39;</span>,    <span class="dt">name</span>: <span class="st">&#39;Paul&#39;</span> },
+                  { <span class="dt">login</span>: <span class="st">&#39;jacques&#39;</span>, <span class="dt">name</span>: <span class="st">&#39;Jacques&#39;</span> } ];
+
+    <span class="kw">for</span> (<span class="kw">var</span> i <span class="kw">in</span> users) {
+        <span class="ot">stmt</span>.<span class="fu">run</span>(users[i].<span class="fu">login</span>, users[i].<span class="fu">name</span>);
+    }
+
+    <span class="ot">db</span>.<span class="fu">each</span>(<span class="st">&quot;select login, name from users&quot;</span>, <span class="kw">function</span>(err, row) {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="ot">row</span>.<span class="fu">login</span> + <span class="st">&quot;: &quot;</span> + <span class="ot">row</span>.<span class="fu">name</span>);
+    });
+});</code></pre>
+<p>Comme à l'habitude, nous commençons par inclure notre module fraîchement installé <em>sqlite3</em>.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> db = <span class="kw">new</span> <span class="ot">sqlite3</span>.<span class="fu">Database</span>(<span class="st">&#39;:memory:&#39;</span>);</code></pre>
+<p>Nous créons ensuite un objet <em>Database</em> sur lequel nous effectuerons nos requêtes. Le paramètre est le nom du fichier de base de données que nous souhaitons utiliser ; pour nos premiers tests, <code>':memory:'</code> nous permet d'utiliser une base temporaire qui sera détruite à la fin de l'exécution. Ce n'est bien entendu que pour faciliter la compréhension ; peu d'intérêt dans une application finale.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">db</span>.<span class="fu">serialize</span>(<span class="kw">function</span>() {
+    ...
+});</code></pre>
+<p>Nous englobons le code de notre application dans une fonction que nous passons en paramètre la méthode <code>serialize</code> de notre objet <code>db</code>. Cela nous permet d'indiquer que les requêtes qui sont exécutées dans cette fonction doivent être exécutées de manière séquentielle, c'est-à-dire l'une après l'autre (en opposition au mode parallèle dans lequel toutes les requêtes sont exécutées en même temps).</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">db</span>.<span class="fu">run</span>(<span class="st">&quot;create table users (login, name)&quot;</span>);</code></pre>
+<p>Ici, grâce à la méthode <code>db.run</code>, nous exécutons une simple requête SQL, en l'occurrence nous créons une table <em>users</em> composée de deux colonnes : <em>login</em> et <em>name</em>. Notez que SQLite n'est pas très exigent sur le typage des données. Par défaut, les colonnes sont de type <em>chaîne</em>.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> stmt = <span class="ot">db</span>.<span class="fu">prepare</span>(<span class="st">&quot;insert into users values (?, ?)&quot;</span>);
+<span class="kw">var</span> users = [ { <span class="dt">login</span>: <span class="st">&#39;pierre&#39;</span>,  <span class="dt">name</span>: <span class="st">&#39;Pierre&#39;</span> },
+              { <span class="dt">login</span>: <span class="st">&#39;paul&#39;</span>,    <span class="dt">name</span>: <span class="st">&#39;Paul&#39;</span> },
+              { <span class="dt">login</span>: <span class="st">&#39;jacques&#39;</span>, <span class="dt">name</span>: <span class="st">&#39;Jacques&#39;</span> } ];
+
+<span class="kw">for</span> (<span class="kw">var</span> i <span class="kw">in</span> users) {
+    <span class="ot">stmt</span>.<span class="fu">run</span>(users[i].<span class="fu">login</span>,users[i].<span class="fu">name</span>);
+}</code></pre>
+<p>Nous créons ensuite un <em>statement</em>, ce que l'on peut voir comme un modèle de requête. En effet dans la requête <code>insert</code>, les points d'interrogation seront remplacés par des valeurs qui seront automatiquement mises au bon format (avec les guillemets, les caractères d'échappement…).</p>
+<p>Les données que nous allons insérer dans notre table <em>users</em> sont contenues dans le tableau <code>users</code>. Nous bouclons donc sur les éléments de ce tableau, puis pour chacun nous appelons la méthode <code>stmt.run</code>, ce qui aura pour conséquence d'utiliser la requête (le <em>statement</em>) que nous venons de définir, en utilisant les bonnes valeurs, passées en paramètre.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">db</span>.<span class="fu">each</span>(<span class="st">&quot;select login, name from users&quot;</span>, <span class="kw">function</span>(err, row) {
+    <span class="ot">console</span>.<span class="fu">log</span>(<span class="ot">row</span>.<span class="fu">login</span> + <span class="st">&quot;: &quot;</span> + <span class="ot">row</span>.<span class="fu">name</span>);
+});</code></pre>
+<p>Après avoir inséré nos valeurs dans la base, nous allons les lire, en utilisant la méthode <code>db.each</code>. Cette méthode exécute une requête, mais contrairement à <code>db.run</code> que nous avons vue plus haut, celle-ci nous permet de récupérer le résultat de son exécution, en l'occurrence les enregistrements retournés.</p>
+<p>Pour cela, nous fournissons à <code>db.each</code> une fonction de rappel qui sera exécutée pour chaque enregistrement renvoyé, enregistrement qui sera passé en second paramètre, le premier étant l'erreur éventuelle.</p>
+<p>Il existe également une méthode <code>db.all</code> qui permet d'accéder à tous les résultats de la requête en même temps, ce qui peut être utile pour compter les résultats par exemple, ou encore pour effectuer un traitement sur plusieurs résultats à la fois.</p>
+<p>Exécutons notre exemple :</p>
+<pre class="sh"><code>$ node sqlite01.js
+pierre: Pierre
+paul: Paul
+jacques: Jacques</code></pre>
+<h3 id="deuxième-exemple"><a href="#deuxième-exemple">4.1.3 Deuxième exemple</a></h3>
+<p>Dans ce deuxième exemple à peine plus complexe, nous allons cette fois-ci utiliser un fichier où stocker notre base de données SQLite. Le but sera de stocker les dates et heures d'appel du script dans cette base, afin de les afficher à chaque exécution.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> sqlite3 = <span class="fu">require</span>(<span class="st">&#39;sqlite3&#39;</span>);
+<span class="kw">var</span> db = <span class="kw">new</span> <span class="ot">sqlite3</span>.<span class="fu">Database</span>(<span class="st">&#39;sqlite02.db&#39;</span>);
+
+<span class="ot">db</span>.<span class="fu">serialize</span>(<span class="kw">function</span>() {
+    <span class="ot">db</span>.<span class="fu">run</span>(<span class="st">&quot;create table if not exists log (date)&quot;</span>);
+    <span class="ot">db</span>.<span class="fu">all</span>(<span class="st">&quot;select date from log&quot;</span>, <span class="kw">function</span>(err, rows) {
+        <span class="kw">if</span>( <span class="ot">rows</span>.<span class="fu">length</span> == <span class="dv">0</span> )
+        {
+            <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;Premièreexécution !&quot;</span>);
+        }
+        <span class="kw">else</span>
+        {
+            <span class="kw">for</span>( <span class="kw">var</span> i <span class="kw">in</span> rows )
+            {
+                <span class="ot">console</span>.<span class="fu">log</span>(rows[i].<span class="fu">date</span>);
+            }
+        }
+    });
+
+    <span class="kw">var</span> date = <span class="kw">new</span> <span class="fu">Date</span>().<span class="fu">toLocaleString</span>();
+    <span class="kw">var</span> stmt = <span class="ot">db</span>.<span class="fu">prepare</span>(<span class="st">&quot;insert into log values (?)&quot;</span>);
+    <span class="ot">stmt</span>.<span class="fu">run</span>(date);
+});</code></pre>
+<p>Nous utilisons à présent le fichier <em>sqlite02.db</em> pour stocker nos données, où nous créons une table <em>log</em> si celle-ci n'existe pas déjà (<code>if not exists</code>). La table ne contient qu'un seul champ : <em>date</em>.</p>
+<p>Nous commençons par exécuter la requête <code>select date from log</code> qui nous renvoie les dates d'exécution du script. S'il n'y a pas d'enregistrements renvoyés (<code>rows.length == 0</code>), nous affichons qu'il s'agit de la première exécution du script. Sinon, nous affichons les dates.</p>
+<p>Puis nous insérons en base la date courante afin que celle-ci soit affichée pour les prochaines exécutions.</p>
+<p>Si vous exécutez ce script plusieurs fois, vous aurez un affichage similaire à celui-ci :</p>
+<pre><code>$ node sqlite02.js
+Première exécution !
+
+$ node sqlite02.js
+Fri Sep 13 2013 13:10:40 GMT+0200 (Paris, Madrid (heure d&#39;été))
+
+$ node sqlite02.js
+Fri Sep 13 2013 13:10:40 GMT+0200 (Paris, Madrid (heure d&#39;été))
+Fri Sep 13 2013 13:10:55 GMT+0200 (Paris, Madrid (heure d&#39;été))</code></pre>
+<h3 id="aller-plus-loin-avec-un-orm"><a href="#aller-plus-loin-avec-un-orm">4.1.4 Aller plus loin avec un ORM</a></h3>
+<p>Si vous avez déjà dévéloppé des applications utilisant une base de données SQL, vous n'êtes pas sans savoir qu'il peut être pénible d'avoir à se soucier des requêtes SQL, de leur syntaxe, notamment lorsqu'il s'agit de faire des requêtes sur plusieurs tables en même temps.</p>
+<p>On préfère donc utiliser par exemple un ORM <em>(object-relational mapping)</em> qui permet de traiter les données en base comme des objets. Par exemple, avec l'ORM <em>Sequelize</em> (http://sequelizejs.com) nous pouvons définir un modèle <em>User</em> correspondant à la table <em>users</em> utilisée dans notre premier exemple :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> User = <span class="ot">sequelize</span>.<span class="fu">define</span>(<span class="st">&#39;User&#39;</span>, {
+    <span class="dt">login</span>: { <span class="dt">type</span>: <span class="ot">Sequelize</span>.<span class="fu">STRING</span>, <span class="dt">primaryKey</span>: <span class="kw">true</span> },
+    <span class="dt">name</span>:<span class="ot">Sequelize</span>.<span class="fu">STRING</span>
+});</code></pre>
+<p>Sequelize peut ensuite créer automatiquement notre table :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">User</span>.<span class="fu">sync</span>();</code></pre>
+<p>Puis nous pouvons requêter sur nos utilisateurs grâce à la méthode find.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">User</span>.<span class="fu">find</span>(<span class="st">&#39;pierre&#39;</span>).<span class="fu">success</span>(<span class="kw">function</span>(user) {
+    <span class="ot">console</span>.<span class="fu">log</span>(<span class="ot">user</span>.<span class="ot">values</span>.<span class="fu">name</span>);
+});</code></pre>
+<p>Sequelize permet de manipuler d'autres bases de données qu'SQLite comme MySQL ou PostgreSQL, et il existe d'autres ORM disponibles. N'hésitez pas rechercher celui qui correspondra le mieux à vos besoins.</p>
+<h2 id="mongodb"><a href="#mongodb">4.2 MongoDB</a></h2>
+<p>MongoDB se distingue des systèmes de gestion de base de données traditionnels par le type d'objet qu'il peut stocker et sa manière de les stocker. Ici pas de tables et de relations (comme des clés étrangères). Vous stockez des objets constitués de propriétés, dont les valeurs peuvent être d'autres objets. Cela vous rappelle quelque chose ? Oui, c'est ouvertement inspiré des objets JavaScript auxquels vous devez commencer à être habitués !</p>
+<h3 id="le-shell-de-mongodb"><a href="#le-shell-de-mongodb">4.2.1 Le shell de MongoDB</a></h3>
+<p>Première chose à faire : installer MongoDB. Vous pouvez utiliser le gestionnaire de paquets de votre système, ou bien télécharger le programme sur le site de MongoDB (http://www.mongodb.org/).</p>
+<p>Une fois installé, vous pouvez lancer le shell de MongoDB par la commande <code>mongo</code>. Créons notre première base de données, et appelons-la <code>mabase</code> :</p>
+<pre><code>&gt; use mabase;
+switched to db mabase
+
+&gt; db
+mabase</code></pre>
+<p>Comme vous le voyez, pour créer une base il suffit de vouloir l'utiliser ! Une fois que vous avez déclaré à Mongo que vous souhaitiez utiliser la base <code>mabase</code>, c'est par l'objet <code>db</code> que vous y accédez.</p>
+<p>Commençons par insérer quelques données dans notre base :</p>
+<pre><code>&gt; db.utilisateurs.save({ nom: &#39;Pierre&#39;, adresse: { voie: &#39;Avenue des Rues&#39;,
+ville: &#39;Rennes&#39; } });
+
+&gt; db.utilisateurs.save({ nom: &#39;Jacques&#39;, adresse: { voie: &#39;Rue des Avenues&#39;,
+ville: &#39;Paris&#39; } });
+
+&gt; db.utilisateurs.save({ nom: &#39;Paul&#39; });</code></pre>
+<p>Pour ce qui est de la terminologie Mongo, nous venons ici d'insérer trois <em>documents</em> dans une <em>collection</em>. Vous constaterez que les documents d'une collection peuvent être hétérogènes ; évidemment il vaut mieux éviter qu'ils le soient trop.</p>
+<p>Pour vérifier le contenu de notre collection, nous utilisons la méthode <code>find</code> de l'objet <code>db</code>, à laquelle nous pouvons donner des critères de recherche.</p>
+<pre><code>&gt;db.utilisateurs.find();
+{ &quot;_id&quot; : ObjectId(&quot;5238b1c15fe1afba9cec2027&quot;), &quot;nom&quot; : &quot;Pierre&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Avenue des Rues&quot;, &quot;ville&quot; : &quot;Rennes&quot; } }
+{ &quot;_id&quot; : ObjectId(&quot;5238b1c95fe1afba9cec2028&quot;), &quot;nom&quot; : &quot;Jacques&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Rue des Avenues&quot;, &quot;ville&quot; : &quot;Paris&quot; } }
+{ &quot;_id&quot; : ObjectId(&quot;5238b1d05fe1afba9cec2029&quot;), &quot;nom&quot; : &quot;Paul&quot; }
+
+&gt;db.utilisateurs.find({ nom: &#39;Pierre&#39; });
+{ &quot;_id&quot; : ObjectId(&quot;5238b1c15fe1afba9cec2027&quot;), &quot;nom&quot; : &quot;Pierre&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Avenue des Rues&quot;, &quot;ville&quot; : &quot;Rennes&quot; } }
+
+&gt;db.utilisateurs.find({ &#39;adresse.ville&#39;: &#39;Paris&#39; });
+{ &quot;_id&quot; : ObjectId(&quot;5238b1c95fe1afba9cec2028&quot;), &quot;nom&quot; : &quot;Jacques&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Rue des Avenues&quot;, &quot;ville&quot; : &quot;Paris&quot; } }</code></pre>
+<p>Pour mettre à jour un document, nous utilisons la méthode update :</p>
+<pre><code>&gt;db.utilisateurs.update( { nom: &#39;Paul&#39; }, { nom: &#39;Paul&#39;, nb: 3 } );
+
+&gt;db.utilisateurs.find( { nom: &#39;Paul&#39; } );
+{ &quot;_id&quot; :ObjectId(&quot;5238b1d05fe1afba9cec2029&quot;), &quot;nom&quot; : &quot;Paul&quot;, &quot;nb&quot; : 3 }</code></pre>
+<p>À présent que vous connaissez les bases de MongoDB, voyons comment utiliser tout ça avec Node.js.</p>
+<h3 id="mongodb-avec-node.js-mongoose"><a href="#mongodb-avec-node.js-mongoose">4.2.2 MongoDB avec Node.js : Mongoose</a></h3>
+<p>Il existe plusieurs modules permettant d'accéder à MongoDB en Node.js. Le module de base est <em>mongodb</em>, qui fournit une interface permettant d'effectuer des opérations sur une base de la même manière que nous venons de le faire avec le shell <em>mongo</em>. Le module <em>mongoose</em> est un autre module officiel, qui en se basant sur <em>mongodb</em> introduit une couche supplémentaire facilitant la manipulation des données grâce à une couche ODM <em>(object-document mapper)</em>, équivalent pour les documents des ORM <em>(object-relational mapper)</em>.</p>
+<p>Pour installer <em>mongoose</em> : <code>npm install mongoose</code>. Remarquez que <em>mongoose</em> requiert le module <em>mongodb</em>.</p>
+<p>Voici le code source de notre exemple.</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> mongoose =<span class="fu">require</span>(<span class="st">&#39;mongoose&#39;</span>);
+
+<span class="co">// 1- Déclaration du modèle</span>
+<span class="kw">var</span> utilisateurSchema = <span class="ot">mongoose</span>.<span class="fu">Schema</span>({
+    <span class="dt">nom</span>: String,
+    <span class="dt">nb</span>: Number,
+    <span class="dt">adresse</span>: {
+        <span class="dt">voie</span>: String,
+        <span class="dt">ville</span>: String
+    }
+});
+<span class="ot">utilisateurSchema</span>.<span class="ot">methods</span>.<span class="fu">hello</span> = <span class="kw">function</span>() {
+    <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;Bonjour, je m&#39;appelle &quot;</span> +<span class="kw">this</span>.<span class="fu">nom</span> + <span class="st">&quot; !&quot;</span>);
+};
+<span class="kw">var</span> Utilisateur = <span class="ot">mongoose</span>.<span class="fu">model</span>(<span class="st">&#39;utilisateurs&#39;</span>, utilisateurSchema);
+
+<span class="co">// 2- Opérations sur les données</span>
+<span class="kw">var</span> db = <span class="ot">mongoose</span>.<span class="fu">connection</span>;
+<span class="ot">db</span>.<span class="fu">once</span>(<span class="st">&#39;open&#39;</span>, <span class="kw">function</span>() {
+    <span class="kw">var</span> pierre = <span class="kw">new</span> <span class="fu">Utilisateur</span>({
+        <span class="dt">nom</span>: <span class="st">&#39;Pierre&#39;</span>,
+        <span class="dt">adresse</span>: {
+            <span class="dt">voie</span>: <span class="st">&#39;Avenue des Rues&#39;</span>,
+            <span class="dt">ville</span>: <span class="st">&#39;Rennes&#39;</span>
+        }
+    });
+    <span class="ot">pierre</span>.<span class="fu">save</span>(<span class="kw">function</span>(err, utilisateur) {
+        <span class="ot">utilisateur</span>.<span class="fu">hello</span>();
+        <span class="ot">mongoose</span>.<span class="fu">disconnect</span>();
+    });
+});
+
+<span class="ot">mongoose</span>.<span class="fu">connect</span>(<span class="st">&#39;mongodb://localhost/mabase2&#39;</span>);</code></pre>
+<p>J'ai séparé le code source en deux parties, la première constituée de la déclaration du modèle, et la seconde d'exemples d'opérations possibles sur les données grâce à ce modèle.</p>
+<h4 id="déclaration-du-modèle"><a href="#déclaration-du-modèle">4.2.2.1 Déclaration du modèle</a></h4>
+<p>Tout d'abord nous déclarons un <em>schéma</em>, <code>utilisateurSchema</code>. Un schéma permet de définir une structure au document que nous allons utiliser, une sorte de modèle (à ne pas confondre avec les modèles que nous allons voir par la suite). Pour notre schéma d'utilisateur, nous déclarons trois attributs :</p>
+<ul>
+<li><code>nom</code>, de type chaîne de caractère <em>(String)</em> ;</li>
+<li><code>nb</code>, de type nombre <em>(Number)</em> ;</li>
+<li>et <code>adresse</code>, objet contenant un attribut voie et un attribut <code>ville</code>.</li>
+</ul>
+<p>Nous déclarons ensuite dans ce schéma une <em>méthode</em> appelée <code>hello</code>. Nous pourrons alors appeler cette méthode sur n'importe quel objet héritant de notre schéma ; nous y reviendrons.</p>
+<p>À partir de ce schéma, nous créons un <em>modèle</em> que nous appelons <code>Utilisateur</code>, que nous associons à la collection Mongo <code>utilisateurs</code>. Si vous êtes habitués à la programmation objet, ce modèle représente en quelque sorte une classe, à partir de laquelle nous allons pouvoir créer nos objets utilisateurs.</p>
+<h4 id="opérations-sur-les-données"><a href="#opérations-sur-les-données">4.2.2.2 Opérations sur les données</a></h4>
+<p>Nous déclarons tout d'abord un objet db qui nous permet d'accéder à notre base Mongo : <code>var db = mongoose.connection;</code>.</p>
+<p>Puis, par la méthode <code>once</code> de notre objet <code>db</code> nous déclarons quoi faire lorsque nous sommes parvenus à nous connecter à la base, en passant comme paramètre une fonction appelée alors.</p>
+<p>Dans cette fonction, nous commençons par créer un objet utilisateur nommé <code>pierre</code>, à partir du modèle <code>Utilisateur</code>. Nous initialisons cet objet avec des données : son nom et son adresse. Notez que nous ne définissons par l'attribut <code>nb</code> déclaré dans le schéma, rien ne nous oblige à le faire tout de suite.</p>
+<p>Enfin, nous enregistrons cet objet <code>pierre</code>, autrement dit nous le créons dans la base Mongo. La fonction donnée en paramètre à la méthode <code>save</code> a deux paramètres, le premier étant l'erreur éventuelle, le second l'objet effectivement enregistré.</p>
+<p>Une fois l'utilisateur enregistré, nous appelons sa méthode <code>hello</code> (que nous avions déclarée dans le schéma <code>utilisateurSchema</code>, puis nous fermons la connexion via <code>mongoose.disconnect()</code>.</p>
+<p>Nous avons déclaré les actions à effectuer lorsque nous étions connecté à la base ; encore faut-il s'y connecter effectivement : avec <code>mongoose.connect('mongodb://localhost/mabase2')</code>, nous nous connectons à la base <code>mabase2</code> sur le serveur local.</p>
+<h4 id="exécution-de-lexemple"><a href="#exécution-de-lexemple">4.2.2.3 Exécution de l'exemple</a></h4>
+<p>Pour exécuter l'exemple, il est nécessaire de lancer le serveur MongoDB s'il est pas déjà en cours d'exécution. Cela se fait à l'aide du programme <code>mongod</code>. Il est possible que vous deviez passer en paramètre de ce programme le chemin du répertoire de stockage des bases Mongo. Par exemple sous Windows : <code>mongod -dbpath C:\Temp\mongodb</code>.</p>
+<p>Une fois que notre serveur MongoDB tourne, nous pouvons exécuter le script :</p>
+<pre><code>$ node mongoose01.js
+Bonjour, je m&#39;appelle Pierre !</code></pre>
+<h3 id="conclusion-sur-mongodb"><a href="#conclusion-sur-mongodb">4.2.3 Conclusion sur MongoDB</a></h3>
+<p>Nous avons donc vu les rudiments de MongoDB et de son utilisation avec Node.js. Bien évidemment, MongoDB permet des opérations bien plus complexes que celles que nous venons de voir, je vous encourage à feuilleter la documentation de MongoDB et du module <em>mongoose</em>.</p>
+<h1 id="chapitre-5-créez-et-diffusez-vos-modules"><a href="#chapitre-5-créez-et-diffusez-vos-modules">Chapitre 5 : Créez et diffusez vos modules</a></h1>
+<p>Nous l'avons vu, l'une des forces de Node.js est la possibilité qu'il donne d'étendre ses fonctionnalités au moyen de modules. Nous avons vu des modules intégrés à la distribution par défaut de Node.js <em>(http, url,fs)</em>, des modules tiers récupérés via le gestionnaire de paquets <em>npm</em> <em>(express, mongoose…)</em>, mais vous vous doutez bien qu'il est possible de créer vos propres modules.</p>
+<p>Il y a typiquement deux raisons qui peuvent vous pousser à créer vos propres modules :</p>
+<ul>
+<li>structurer une application qui devient complexe : modulariser votre code le rend plus facile à maintenir ou à débuguer ;</li>
+<li>rendre des parties de votre code réutilisables au sein d'un autre projet ou par la communauté.</li>
+</ul>
+<p>Pour ce chapitre, nous allons développer un module très simple qui utilise l'API de <em>geocoding</em> de Google, documentée à l'adresse https://developers.google.com/maps/documentation/geocoding/?hl=fr. Le principe de cette API est le suivant : on lui donne une adresse (par exemple « Place de Bretagne, Rennes »), et elle nous renvoie diverses informations sur cette adresse, et notamment ses coordonnées (latitude et longitude).</p>
+<h2 id="spécifications-de-notre-module"><a href="#spécifications-de-notre-module">5.1 Spécifications de notre module</a></h2>
+<p>Notre module, que j'ai choisi d'appeler sobrement <em>google-geocoding</em>, disposera d'une seule méthode : <code>geocode</code>. Celle-ci prendra deux paramètres :</p>
+<ul>
+<li>l'adresse dont on souhaite avoir les coordonnées ;</li>
+<li>la fonction à appeler une fois l'appel effectué, elle-même prenant deux paramètres :</li>
+<li>l'erreur éventuelle en cas de problème d'appel à l'API (<code>null</code> sinon) ;</li>
+<li>le résultat du geocoding sous forme d'objet <code>{ lat: 48.1091828,lng : -1.6839106 }</code>, ou <code>null</code> si Google n'a pas trouvé notre adresse.</li>
+</ul>
+<p>Voici un exemple d'utilisation de notre futur module :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> google_geocoding = <span class="fu">require</span>(<span class="st">&#39;./google-geocoding&#39;</span>);
+
+<span class="ot">google_geocoding</span>.<span class="fu">geocode</span>(<span class="st">&#39;Place de Bretagne, Rennes&#39;</span>, <span class="kw">function</span>(err, location) {
+    <span class="kw">if</span>( err ) {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Erreur : &#39;</span> + err);
+    } <span class="kw">else</span> <span class="kw">if</span>( !location ) {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Aucun résultat.&#39;</span>);
+    } <span class="kw">else</span> {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Latitude : &#39;</span> + <span class="ot">location</span>.<span class="fu">lat</span> + <span class="st">&#39; ; Longitude : &#39;</span> + <span class="ot">location</span>.<span class="fu">lng</span>);
+    }
+});</code></pre>
+<p>Si vous exécutez ce code, vous obtiendrez naturellement une erreur : notre module n'existe pas encore. Notez que l'instruction require fait appel au module par <code>./google-geocoding</code> car le module se situera dans le fichier <em>google-geocoding.js</em> situé dans le même répertoire.</p>
+<p>Créons ce fichier avec le contenu suivant :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="ot">module</span>.<span class="ot">exports</span>.<span class="fu">geocode</span> = <span class="kw">function</span>(address, callback) {
+    <span class="fu">callback</span>(<span class="st">&#39;Not implemented&#39;</span>, <span class="kw">null</span>);
+};</code></pre>
+<p>Il ne fait rien pour l'instant, mais cela va nous permettre de l'utiliser sans avoir d'exception déclenchée par Node.</p>
+<h2 id="testons-notre-module-avec-mocha"><a href="#testons-notre-module-avec-mocha">5.2 Testons notre module avec Mocha</a></h2>
+<p>Et là vous cherchez si vous n'avez pas oublié de lire un chapitre. Et bien non : nous allons bien tester notre module <em>google-geocoding</em> avant même de l'écrire. En réalité, nous n'allons qu'écrire les tests unitaires, autrement dit nous allons appliquer la méthode bien connue et très en vogue de développement des <em>TDD</em>, pour <em>test-driven development</em>. Le principe est simple : écrire les tests en fonction des spécifications et non du code testé. Idéalement, ces tests sont mêmes écrits par un autre développeur que celui écrivant le code testé.</p>
+<p>Entrons dans le vif du sujet : <em>Mocha</em>. Il s'agit d'un module (qui s'installe avec <code>npm install -g mocha</code>) permettant de réaliser très simplement des tests unitaires sur du code JavaScript, et plus particulièrement avec Node.js. En complément de Mocha, nous utiliserons également le module <em>Should</em> (<code>npm install should</code>) facilitant l'écriture des tests unitaires.</p>
+<p>Une fois le module Mocha installé, la commande <code>mocha</code> peut être exécutée en ligne de commande afin de lancer les tests. Par défaut, Mocha va chercher les tests dans le fichier <em>tests/test.js</em>. Créons donc ce fichier, avec le contenu suivant :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> should = <span class="fu">require</span>(<span class="st">&#39;should&#39;</span>);
+<span class="kw">var</span> google_geocoding = <span class="fu">require</span>(<span class="st">&#39;../google-geocoding&#39;</span>);
+
+<span class="fu">describe</span>(<span class="st">&#39;Google geocoding&#39;</span>, <span class="kw">function</span>() {
+    <span class="fu">describe</span>(<span class="st">&#39;#geocode()&#39;</span>, <span class="kw">function</span>() {
+        <span class="fu">it</span>(<span class="st">&#39;should return null on incorrect address&#39;</span>, <span class="kw">function</span>(done) {
+            <span class="ot">google_geocoding</span>.<span class="fu">geocode</span>(<span class="st">&#39;tototititutu&#39;</span>, <span class="kw">function</span>(err, location) {
+                <span class="ot">should</span>.<span class="ot">not</span>.<span class="fu">exist</span>(err);
+                <span class="ot">should</span>.<span class="ot">not</span>.<span class="fu">exist</span>(location);
+                <span class="fu">done</span>();
+            });
+        });
+
+        <span class="fu">it</span>(<span class="st">&#39;should return non null on correct address&#39;</span>, <span class="kw">function</span>(done){
+            <span class="ot">google_geocoding</span>.<span class="fu">geocode</span>(<span class="st">&#39;Place de Bretagne, Rennes&#39;</span>, <span class="kw">function</span>(err, location) {
+                <span class="ot">should</span>.<span class="ot">not</span>.<span class="fu">exist</span>(err);
+                <span class="ot">location</span>.<span class="ot">should</span>.<span class="ot">have</span>.<span class="fu">property</span>(<span class="st">&#39;lat&#39;</span>);
+                <span class="ot">location</span>.<span class="ot">should</span>.<span class="ot">have</span>.<span class="fu">property</span>(<span class="st">&#39;lng&#39;</span>);
+                <span class="fu">done</span>();
+            });
+        });
+    });
+});</code></pre>
+<p>Mocha permet d'écrire les tests avec une syntaxe très intuitive (tout en restant du vrai code JavaScript) au moyen de fonctions comme <code>describe</code> ou <code>it</code>. Ces deux fonctions ne servent qu'à organiser les tests. Ici comme nous n'avons qu'une seule méthode à tester, l'organisation reste relativement simple.</p>
+<p>Nous déclarons ici deux cas de test : un pour une adresse incorrecte (auquel cas notre méthode <code>geocode</code> ne renvoie pas d'erreur et un résultat <code>null</code>), et un pour une adresse correcte.</p>
+<p>Le module <em>should</em> nous permet d'écrire des <em>assertions</em>, comme « <code>location</code> doit avoir une propriété <code>lat</code> ». Cela s'écrit : <code>location.should.have.property('lat');</code>. Facile non ?</p>
+<p>Pour déclarer qu'un objet (ici <code>err</code>) doit être nul, on utilisera <code>should.not.exist(err)</code>. On ne peut pas utiliser la syntaxe <code>err.should.not.exist</code>, car par définition si <code>err</code> est nul, alors il ne peut pas disposer de la propriété <code>should</code>.</p>
+<p>À présent lançons nos tests ! Dans le répertoire du module, tapez la commande <code>mocha -R spec</code> et observez le résultat : (l'option <code>-R spec</code> ne sert qu'à avoir un affichage plus détaillé.)</p>
+<pre><code>$ mocha -R spec
+
+Google geocoding
+#geocode()
+    1) should return null on incorrect address
+    2) should return non null on correct address
+
+0 passing (8ms)
+2 failing
+
+(...)</code></pre>
+<p>Sans surprise, les tests ne passent pas. Notez tout de même que l'affichage généré par Mocha rend le résultat facilement compréhensible, avec le détail et la trace de chaque erreur (que je n'ai pas reproduits ici).</p>
+<p>Maintenant que notre module est testable, il est temps d'en écrire le contenu.</p>
+<h2 id="le-module-de-geocoding"><a href="#le-module-de-geocoding">5.3 Le module de geocoding</a></h2>
+<p>Voici le code de notre module, à placer dans notre fichier <em>google- geocoding.js</em> :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> http = <span class="fu">require</span>(<span class="st">&quot;http&quot;</span>);
+
+<span class="ot">module</span>.<span class="ot">exports</span>.<span class="fu">geocode</span> = <span class="kw">function</span>(address, callback) {
+    <span class="kw">var</span> url = <span class="st">&quot;http://maps.googleapis.com/maps/api/geocode/json?address=&quot;</span>
+        + <span class="fu">encodeURIComponent</span>(address) + <span class="st">&quot;&amp;sensor=false&quot;</span>;
+    <span class="ot">http</span>.<span class="fu">get</span>(url, <span class="kw">function</span>(res) {
+        <span class="kw">if</span>( <span class="ot">res</span>.<span class="fu">statusCode</span> != <span class="dv">200</span> ) {
+            <span class="fu">callback</span>(<span class="st">&quot;Statut HTTP = &quot;</span> + <span class="ot">res</span>.<span class="fu">statusCode</span>, <span class="kw">null</span>);
+        } <span class="kw">else</span> {
+            <span class="kw">var</span> output = <span class="st">&#39;&#39;</span>;
+            <span class="ot">res</span>.<span class="fu">setEncoding</span>(<span class="st">&#39;utf8&#39;</span>);
+
+            <span class="ot">res</span>.<span class="fu">on</span>(<span class="st">&#39;data&#39;</span>, <span class="kw">function</span> (chunk) {
+                output += chunk;
+            });
+
+            <span class="ot">res</span>.<span class="fu">on</span>(<span class="st">&#39;end&#39;</span>, <span class="kw">function</span>() {
+                <span class="kw">var</span> response =<span class="ot">JSON</span>.<span class="fu">parse</span>(output);
+                <span class="kw">if</span>(<span class="ot">response</span>.<span class="fu">status</span> == <span class="st">&quot;OK&quot;</span> ) {
+                    <span class="kw">var</span> location =<span class="ot">response</span>.<span class="fu">results</span>[<span class="dv">0</span>].<span class="ot">geometry</span>.<span class="fu">location</span>;
+                    <span class="fu">callback</span>(<span class="kw">null</span>, location);
+                } <span class="kw">else</span> <span class="kw">if</span>(<span class="ot">response</span>.<span class="fu">status</span> == <span class="st">&quot;ZERO_RESULTS&quot;</span> ) {
+                    <span class="fu">callback</span>(<span class="kw">null</span>, <span class="kw">null</span>);
+                } <span class="kw">else</span> {
+                    <span class="fu">callback</span>(<span class="st">&quot;Status = &quot;</span> +<span class="ot">response</span>.<span class="fu">status</span>, <span class="kw">null</span>);
+                }
+            });
+        }
+    }).<span class="fu">on</span>(<span class="st">&#39;error&#39;</span>, <span class="kw">function</span>(e) {
+        <span class="fu">callback</span>(<span class="ot">e</span>.<span class="fu">message</span>, <span class="kw">null</span>);
+    });
+};</code></pre>
+<p>Rien de vraiment nouveau ici par rapport à ce que nous avons vu. Notez l'utilisation de la méthode <code>get</code> du module <em>http</em>, qui permet non pas de créer un serveur mais de lancer une requête HTTP <em>GET</em> sur un serveur, ici le serveur de l'API Google. La particularité ici est que l'on lit le retour de cet appel par morceaux <em>(chunks)</em>, grace à <code>res.on('data',...)</code> et <code>res.on('end',...)</code>.</p>
+<p>Pour déclarer une méthode <em>publique</em> du module, on utilise l'objet <code>module</code>, et sa propriété <code>exports</code>. Ainsi nous pourrions créer un module ainsi :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> f = <span class="kw">function</span>() { ... };
+<span class="kw">var</span> g = <span class="kw">function</span>() { ... <span class="fu">f</span>(); ... }
+
+<span class="ot">module</span>.<span class="fu">exports</span> = {
+    <span class="dt">super_methode</span>: <span class="kw">function</span>() { ... <span class="fu">g</span>(); ... }
+};</code></pre>
+<p>La fonction <code>g</code> utilise la fonction <code>f</code>, et nous rendons une méthode publique, <code>super_methode</code> qui fait appel à <code>g</code>. Mais si nous utilisons notre module, nous ne pourrons utiliser ni <code>f</code> ni <code>g</code>, car celles-ci n'ont pas été exportées.</p>
+<p>À présent, si nous exécutons à nouveau notre petit script d'exemple, nous obtenons l'affichage suivant :</p>
+<pre><code>$ node app.js
+Latitude : 48.1091828 ; Longitude : -1.6839106</code></pre>
+<p>Et si nous lançons notre test avec <em>mocha</em> :</p>
+<pre><code>D:\Documents\nodejs\google_geocoding&gt;mocha -R spec
+
+Google geocoding
+#geocode()
+    V should return null on incorrect address (118ms)
+    V should return non null on correct address (119ms)
+
+2 passing (251ms)</code></pre>
+<p>Miracle, notre module vient de passer les tests unitaires avec succès !</p>
+<h2 id="diffusons-notre-module"><a href="#diffusons-notre-module">5.4 Diffusons notre module</a></h2>
+<p>Maintenant que nous sommes fiers de notre module, nous pouvons le diffuser afin qu'il soit utilisable par d'autres personnes, en utilisant le gestionnaire de paquets <em>npm</em>.</p>
+<p>Pour cela, il est nécessaire d'effectuer quelques modifications. Tout d'abord, nous allons créer le fichier qui décrit notre module, le fichier <em>package.json</em>. Celui-ci contient les informations de base (nom, auteur…), mais aussi les modules requis par son installation.</p>
+<p>Voici un exemple de <em>package.json</em> pour notre module :</p>
+<pre class="sourceCode json"><code class="sourceCode json">{
+    <span class="dt">&quot;author&quot;</span>: <span class="st">&quot;Votre nom &lt;votre.email@example.com&gt;&quot;</span>,
+    <span class="dt">&quot;name&quot;</span>: <span class="st">&quot;google-geocoding&quot;</span>,
+    <span class="dt">&quot;description&quot;</span>: <span class="st">&quot;Small Node module to use Google Geocoding API.&quot;</span>,
+    <span class="dt">&quot;version&quot;</span>: <span class="st">&quot;0.1.1&quot;</span>,
+    <span class="dt">&quot;repository&quot;</span>: {
+        <span class="dt">&quot;url&quot;</span>: <span class="st">&quot;&quot;</span>
+    },
+    <span class="dt">&quot;keywords&quot;</span>: [
+        <span class="st">&quot;google&quot;</span>,
+        <span class="st">&quot;geocoding&quot;</span>,
+        <span class="st">&quot;latitude&quot;</span>,
+        <span class="st">&quot;longitude&quot;</span>,
+        <span class="st">&quot;coordinates&quot;</span>
+    ],
+    <span class="dt">&quot;main&quot;</span>: <span class="st">&quot;&quot;</span>,
+    <span class="dt">&quot;dependencies&quot;</span>: {},
+    <span class="dt">&quot;devDependencies&quot;</span>: {
+        <span class="dt">&quot;mocha&quot;</span>: <span class="st">&quot;*&quot;</span>
+    },
+    <span class="dt">&quot;optionalDependencies&quot;</span>: {},
+    <span class="dt">&quot;engines&quot;</span>: {
+        <span class="dt">&quot;node&quot;</span>: <span class="st">&quot;*&quot;</span>
+    },
+    <span class="dt">&quot;scripts&quot;</span>: {
+        <span class="dt">&quot;test&quot;</span>: <span class="st">&quot;mocha -R spec&quot;</span>
+    }
+}</code></pre>
+<p>De nombreuses options sont disponibles pour ce fichier ; je vous encourage à aller faire un tour du côté de la documentation (https://npmjs.org/doc/json.html) pour voir toutes les possibilités.</p>
+<p>Nous avons également besoin d'un fichier <em>README</em> ; même si cela n'est pas forcément requis, cela est fortement conseillé pour les utilisateurs qui souhaiteraient utiliser notre module. Il décrit typiquement au moins la procédure d'installation, et un exemple d'utilisation.</p>
+<pre><code>google-geocoding
+=====================
+
+This module allows you to use [Google geocoding
+API](https://developers.google.com/maps/documentation/geocoding/) to get the
+coordinates of a specific location.
+
+Installation
+------------  
+
+npm install google-geocoding
+
+Example
+-------  
+
+```javascript
+var google_geocoding = require(&#39;google-geocoding&#39;);
+google_geocoding.geocode(&#39;Place de Bretagne, Rennes, France&#39;, function(err, location) {
+    if( err ) {
+        console.log(&#39;Error: &#39; + err);
+    } else if( !location ) {
+        console.log(&#39;No result.&#39;);
+    } else {
+        console.log(&#39;Latitude: &#39; +location.lat + &#39; ; Longitude: &#39; +location.lng);
+    }
+});
+```</code></pre>
+<p>Le plus simple pour le <em>README</em> est d'utiliser le format Markdown (http://fr.wikipedia.org/wiki/Markdown), très en vogue actuellement et s'affichant très bien sur <em>npmjs.org</em> où notre module sera disponible. Appelons donc le fichier <em>README.md</em>.</p>
+<p>Par ailleurs, modifions le fichier de test <em>test/test.js</em> afin que le la ligne require de notre module devienne :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> google_geocoding = <span class="fu">require</span>(<span class="st">&#39;google-geocoding&#39;</span>);</code></pre>
+<p>Je reviendrais un peu plus bas sur l'intérêt de cette modification.</p>
+<p>La dernière manipulation à effectuer consiste à nettoyer un peu le contenu du répertoire du module. Commencez par supprimer (ou déplacer ailleurs) les fichiers autres que <em>google-geocoding.js</em> et <em>test/test.js</em> (et évidemment les fichiers <em>README.md</em> et <em>package.json</em> que nous venons de créer). Puis renommez le fichier <em>google-geocoding.js</em> en <em>index.js</em> ; ainsi il sera considéré comme le fichier <em>par défaut</em> du module, c'est lui qui sera appelé lorsque l'on écrira require('google-geocoding').</p>
+<p>Nous obtenons donc l'arborescence suivante :</p>
+<ul>
+<li>test/
+<ul>
+<li>test.js</li>
+</ul></li>
+<li>README.md</li>
+<li>package.json</li>
+<li>index.js</li>
+</ul>
+<p>Notre module est maintenant prêt à être diffusé. Tout d'abord, il est nécessaire de se créer un compte sur les dépôts de <em>npm</em>. Cela se fait à l'adresse http://npmjs.org/.</p>
+<p>Deux commandes suffisent ensuite à rendre notre module public :</p>
+<pre><code>$ npm adduser
+Username: &lt;saisir votre login npmjs.org&gt;
+Password: &lt;saisir votre mot de passe&gt;
+Email: &lt;saisir votre e-mail&gt;
+npm http PUT https://registry.npmjs.org/-/user/org.couchdb.user:votrelogin
+npm http 201 https://registry.npmjs.org/-/user/org.couchdb.user:votrelogin
+
+$ npm publish
+npm http PUT https://registry.npmjs.org/google-geocoding
+npm http 201 https://registry.npmjs.org/google-geocoding
+npm http GET https://registry.npmjs.org/google-geocoding
+npm http 200 https://registry.npmjs.org/google-geocoding
+npm http PUT https://registry.npmjs.org/google-geocoding/-/google-
+geocoding-0.1.1.tgz/-rev/1-08931f6eef42fb88dc95f6dfc8f30b81
+npm http 201 https://registry.npmjs.org/google-geocoding/-/google-
+geocoding-0.1.1.tgz/-rev/1-08931f6eef42fb88dc95f6dfc8f30b81
+npm http PUT https://registry.npmjs.org/google-geocoding/0.1.1/-tag/latest
+npm http 201 https://registry.npmjs.org/google-geocoding/0.1.1/-tag/latest
++ google-geocoding@0.1.1</code></pre>
+<p>Et voilà, le module est diffusé. Vous pourrez constater sa présence en vous rendant sur la page de votre compte sur http://npmjs.org (quelques minutes sont parfois nécessaires pour le voir apparaître).</p>
+<p>Pour tester l'installation, il nous suffit de reprendre le script d'exemple vu précédemment, en pensant à utiliser <code>require('google-geocoding')</code> et non require ('./google-geocoding') :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> google_geocoding = <span class="fu">require</span>(<span class="st">&#39;google-geocoding&#39;</span>);
+
+<span class="ot">google_geocoding</span>.<span class="fu">geocode</span>(<span class="st">&#39;Place de Bretagne, Rennes&#39;</span>,<span class="kw">function</span>(err, location) {
+    <span class="kw">if</span>( err ) {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Erreur : &#39;</span> +err);
+    } <span class="kw">else</span> <span class="kw">if</span>( !location ) {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Aucun résultat.&#39;</span>);
+    } <span class="kw">else</span> {
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Latitude : &#39;</span> +<span class="ot">location</span>.<span class="fu">lat</span> + <span class="st">&#39; ; Longitude : &#39;</span> +<span class="ot">location</span>.<span class="fu">lng</span>);
+    }
+});</code></pre>
+<p>Penser à installer le module <em>google-geocoding</em> avant de lancer le programme :</p>
+<pre><code>$ npm install google-geocoding
+npm http GET https://registry.npmjs.org/google-geocoding
+npm http 200 https://registry.npmjs.org/google-geocoding
+google-geocoding@0.1.1node_modules\google-geocoding
+
+$ node test-geocoding.js
+Latitude : 48.1091828 ; Longitude : -1.6839106</code></pre>
+<p>Il nous reste une dernière chose à tester. Nous avions créé un petit script permettant de tester unitairement notre module. Et bien <em>npm</em> peut lancer les tests pour nous. En effet nous avons indiqué dans le <em>package.json</em> :</p>
+<pre class="sourceCode json"><code class="sourceCode json"><span class="er">&quot;scripts&quot;:</span> {
+    <span class="dt">&quot;test&quot;</span>: <span class="st">&quot;mocha -R spec&quot;</span>
+}</code></pre>
+<p>Cette option indique à <em>npm</em> qu'il peut lancer les tests en exécutant la commande mocha. À présent, si nous lançons la commande <code>npm test google- geocoding</code>, <em>npm</em> va exécuter la commande mocha sur notre module fraîchement installé.</p>
+<pre><code>$ npm test google-geocoding
+&gt; google-geocoding@0.1.1 test D:\Documents\nodejs\node_modules\google-
+geocoding
+&gt; mocha -R spec
+
+Google geocoding
+#geocode()
+    V should return null on incorrect address (188ms)
+    V should return non null on correct address (133ms)
+
+2 passing (332ms)</code></pre>
+<h2 id="conclusion-sur-les-modules"><a href="#conclusion-sur-les-modules">5.5 Conclusion sur les modules</a></h2>
+<p>Les modules sont incontestablement l'une des plus grandes forces de NodeJS. De la même manière que le monde du logiciel libre, Node a progressé grâce à tout l'écosystème qui lui gravite autour, grâce à la simplicité pour créer des modules supplémentaires et les diffuser.</p>
+<p>Avant de vous lancer dans le développement d'un nouveau module, cherchez s'il n'en existe pas déjà un qui accomplit ce que vous souhaitez. Peut-être en trouverez-vous un qui s'en approche, et s'il est sous licence libre, il pourra être très intéressant et très formateur de le faire évoluer à votre convenance. <em>npmjs.org</em> et <em>GitHub</em> (http://github.com) sont parfaitement adaptés pour ça !</p>
+<h1 id="aller-plus-loin"><a href="#aller-plus-loin">Aller plus loin</a></h1>
+<p>JavaScript est un langage en pleine expansion, comme il l'a été aux débuts du Web, ainsi que lors de l'apparition du Web 2.0 avec les technologies AJAX. Aujourd'hui cette expansion est d'autant plus intéressante qu'elle ne se limite plus à la dynamisation des sites et applications web.</p>
+<p>Grâce à Node.js, il devient un langage de plus en plus polyvalent qui permet désormais de créer des applications serveur ou des programmes autonomes, voire même des applications mobiles grâce à l'envolée du HTML5.</p>
+<p>Node.js n'est pas le seul acteur de ce succès. AngularJS par exemple devient de plus en plus répandu pour la création d'interfaces clientes riches, en intégrant une logique modèle-vue-contrôleur côté client. Imaginez ce que peut donner une application web dont la partie cliente est basée surAngularJS et la partie serveur sur Node.js avec Express !</p>
+<p>Mais JavaScript reste un langage dont la syntaxe peut donner des programmes difficilement compréhensibles et maintenables (des tableaux de fonctions renvoyant des fonctions qui renvoient des objets...). Il existe des langages destinés à faciliter la compréhension du code.</p>
+<p><em>CoffeeScript</em> (http://coffeescript.org) est certainement le plus populaire actuellement. A partir d'un code dont la syntaxe s'inspire du Python et du Ruby, c'est du JavaScript qui est généré après une phase de compilation.</p>
+<p>Prenons par exemple le code suivant disponible dans la documentation officielle de CoffeeScript : http://coffeescript.org/#conditionals :</p>
+<pre class="coffeescript"><code>mood = greatlyImproved if singing
+if happy and knowsIt
+    clapsHands()
+    chaChaCha()
+else
+    showIt()
+date = if friday then sue else jill</code></pre>
+<p>Après compilation, voici le JavaScript généré :</p>
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> date, mood;
+
+<span class="kw">if</span> (singing) {
+    mood = greatlyImproved;
+}
+
+<span class="kw">if</span> (happy &amp;&amp; knowsIt) {
+    <span class="fu">clapsHands</span>();
+    <span class="fu">chaChaCha</span>();
+} <span class="kw">else</span> {
+    <span class="fu">showIt</span>();
+}
+date = friday ? sue : jill;</code></pre>
+<p>C'est lorsque l'on commence à utiliser des classes et des objets que CoffeeScript révèle tout son potentiel. En effet la programmation objet n'existe pas en JavaScript, bien que des techniques permettent de faire tout comme, mais au prix d'un code encore plus difficilement compréhensible. CoffeeScript peut alors rendre les choses beaucoup plus faciles !</p>
+<p>C'est ainsi que s'achève notre exploration de Node.js. J'espère que vous aurez pris autant de plaisir à lire ce livre que j'en ai eu à l'écrire. J'espère aussi vous avoir donné envie d'en savoir plus sur Node.js et JavaScript en général. Nul doute que JavaScript a encore de beaux jours devant lui !</p>
+</div> <!-- #container -->
+</body>
+</html>
