@@ -9,7 +9,7 @@ Le livre est diffusé sous licence **Creative Commons**, ce qui signifie que vou
 
 ## Téléchargement
 
-Le livre est [lisible en ligne (format HTML)](http://scastiel.github.io/decouvrir-nodejs/redecouvrir-javascript-avec-nodejs.html). Vous pouvez également [télécharger le fichier ePub](http://scastiel.github.io/decouvrir-nodejs/redecouvrir-javascript-avec-nodejs.epub), qui pourra être importé sur la plupart des liseuses ou converti si nécessaire via l'utilitaire [Calibre](http://calibre-ebook.com/) par exemple.
+Le livre est lisible en ligne aux formats [HTML](http://scastiel.github.io/decouvrir-nodejs/redecouvrir-javascript-avec-nodejs.html) et [PDF](http://scastiel.github.io/decouvrir-nodejs/redecouvrir-javascript-avec-nodejs.pdf). Vous pouvez également télécharger le fichier [ePub](http://scastiel.github.io/decouvrir-nodejs/redecouvrir-javascript-avec-nodejs.epub), qui pourra être importé sur la plupart des liseuses ou converti si nécessaire via l'utilitaire [Calibre](http://calibre-ebook.com/) par exemple.
 
 ## Construction du livre en HTML, ePub et PDF
 
