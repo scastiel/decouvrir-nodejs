@@ -128,6 +128,24 @@ JSON, via `req.params.name`. C'est tout de même beaucoup plus simple que de
 récupérer l'URL, de la décomposer avec le module _url_, et d'adapter le
 comportement en fonction de la présence ou non du paramètre `name` !
 
+Voici le code du fichier *express01.html*, qui ressemble à l'exemple du chapitre
+précédent :
+
+```html
+<input type="text" placeholder="Enter your name" id="name"/>
+<input type="button" value="OK" onclick="valid()"/>
+<div id="message"></div>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+function valid() {
+    $.getJSON('/hello/' + $('#name').val())
+	    .done(function(data) {
+	        $('#message').html(data.message);
+	    });
+}
+</script>
+```
+
 Bien évidemment, les fonctionnalités proposées par Express vont bien au-delà
 de cela, continuons notre exploration avec une fonction dont tout webmaster un
 minimum rigoureux a besoin : les templates.
@@ -167,27 +185,27 @@ l'exception qu'ici nous allons donner le choix à l'utilisateur entre plusieurs
 prénoms. (Révolutionnaire, non ?)
 
 ```jade
-!!!
+doctype html
 html
-	head
-		title= theTitle
-	body
-		div Choisir un prénom :
-		- for name in theNames  
-			label
-				input(type="radio",name="name",value=name)
-				span Prénom : #{name}
-			br
-		div
-			input(type="button",onclick="valid()",value="OK")
-			#message
-		script(src="http://code.jquery.com/jquery-1.10.1.min.js")
-		script.
-			function valid() {
-				$.get('/hello/' + $('[name=name]:checked').val(), function(data) {
-					$('#message').html(data.message);
-				}, 'json');
-			}
+    head
+        title= title
+    body
+        div Choisir un prénom :
+        - for name in names  
+            label
+                input(type="radio",name="name",value=name)
+                span Prénom : #{name}
+            br
+        div
+            input(type="button",onclick="valid()",value="OK")
+            #message
+        script(src="http://code.jquery.com/jquery-1.10.1.min.js")
+        script.
+            function valid() {
+                $.get('/hello/' + $('[name=name]:checked').val(), function(data) {
+                    $('#message').html(data.message);
+                }, 'json');
+            }
 ```
 
 Comme vous pouvez le remarquer, ça a le goût et l'odeur du HTML, mais ça n'en
@@ -197,16 +215,16 @@ d'indentation.
 Analysons pas à pas le contenu de ce template.
 
 ```jade
-!!!
+doctype html
 ```
 
-La première instruction !!! sert à insérer la déclaration du _doctype_ de
-notre page (celui de HTML5 par défaut). Le code généré sera <!DOCTYPE html>.
+La première instruction `doctype html` sert à insérer la déclaration du _doctype_ de
+notre page (celui de HTML5 par défaut). Le code généré sera `<!DOCTYPE html>`.
 
 ```jade
 html
 	head
-		title= theTitle
+		title= title
 ```
 
 Le document débute ensuite avec la déclaration de notre balise `html`, puis de
@@ -214,8 +232,8 @@ sa balise `head`. Vous l'avez compris, pour déclarer une balise avec Jade (`htm
 `a`, `p`, etc.), on commence la ligne avec le nom de la balise.
 
 Notre balise `title` a une petite particularité : on a écrit `title=` et non
-title. Cela indique à Jade que le contenu de la balise n'est pas le texte qui
-suit, mais le contenu de la variable dont le nom est indiqué, ici `theTitle`,
+`title`. Cela indique à Jade que le contenu de la balise n'est pas le texte qui
+suit, mais le contenu de la variable dont le nom est indiqué, ici `title`,
 que nous donnerons un peu plus tard à Jade pour qu'il génère le HTML.
 
 Si on avait voulu déclarer un titre statique (ne dépendant pas d'une
@@ -230,7 +248,7 @@ Nous attaquons ensuite le corps de la page avec la balise `body`. Son premier
 élément est une balise `div`, dont le contenu est « Choisir un prénom ».
 
 ```jade
-- for name in theNames  
+- for name in names  
 	label
 		input(type="radio",name="name",value=name)
 		span Prénom : #{name}
@@ -244,10 +262,10 @@ ce que l'on voit dans d'autres langages : `- for var element in tableau` permet
 de parcourir les éléments du tableau en définissant à chaque itération
 la variable `element`.
 
-Dans notre exemple le tableau à parcourir est `theNames`, variable que nous
-allons fournir à Jade pour la génération, comme pour `theTitle` vue plus haut.
+Dans notre exemple le tableau à parcourir est `names`, variable que nous
+allons fournir à Jade pour la génération, comme pour `title` vue plus haut.
 
-Donc pour chaque élément de `theNames`, nous allons générer une balise `label`,
+Donc pour chaque élément de `names`, nous allons générer une balise `label`,
 qui contiendra elle-même deux balises, un bouton-radio et un libellé.
 
 Le bouton radio (en HTML `<input type="radio"...`) possède trois attributs qui
@@ -302,20 +320,20 @@ $ npm install jade
 simplifié :
 
 ```javascript
-var express =require('express');
+var express = require('express');
 var fs = require('fs');
 var app = express();
 
-app.set('viewengine', 'jade');
+app.set('view engine', 'jade');
 app.set('views', __dirname);
 
-app.get('/',function(req, res) {
-	res.render('express02', {title: 'Hello', names: [ 'Pierre', 'Paul', 'Jacques' ] });
+app.get('/', function (req, res) {
+  res.render('express02', { title: 'Hello', names: [ 'Pierre', 'Paul', 'Jacques' ] });
 });
 
-app.get('/hello/:name', function(req,res){
-	res.writeHead(200, {'Content-Type': 'application/json'});
-	res.end(JSON.stringify({message: 'Hello ' + req.params.name + '!'}));
+app.get('/hello/:name', function (req, res) {
+  res.writeHead(200, { 'Content-Type': 'application/json' });
+  res.end(JSON.stringify({ message: 'Hello ' + req.params.name + '!' }));
 });
 
 app.listen(8080);
