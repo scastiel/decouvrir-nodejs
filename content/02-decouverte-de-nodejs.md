@@ -209,7 +209,7 @@ Tout d'abord, nous aurons besoin d'un fichier HTML classique contenant un
 formulaire, permettant à l'utilisateur de saisir son nom : (appelons le
 _hello02.html_, nous l'utiliserons ensuite).
 
-```javascript
+```html
 <input type="text" placeholder="Enter your name" id="name"/>
 <input type="button" value="OK" onclick="valid()"/>
 <div id="message"></div>
@@ -258,7 +258,7 @@ var server = http.createServer(function (req, res) {
         res.writeHead(200, {'Content-Type': 'application/json'});
         res.end(JSON.stringify({message: 'Hello ' +name + '!'}));
     } else {
-        console.log('Noname!');
+        console.log('No name!');
         res.writeHead(200, {'Content-Type': 'text/html'});
         fs.readFile('hello02.html',function (err,data) {
             res.end(data);

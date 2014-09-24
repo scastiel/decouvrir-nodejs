@@ -79,7 +79,7 @@ install should`) facilitant l'écriture des tests unitaires.
 
 Une fois le module Mocha installé, la commande `mocha` peut être exécutée en
 ligne de commande afin de lancer les tests. Par défaut, Mocha va chercher les
-tests dans le fichier _tests/test.js_. Créons donc ce fichier, avec le contenu
+tests dans le fichier _test/test.js_. Créons donc ce fichier, avec le contenu
 suivant :
 
 ```javascript
@@ -152,8 +152,7 @@ Maintenant que notre module est testable, il est temps d'en écrire le contenu.
 
 ## 5.3 Le module de geocoding
 
-Voici le code de notre module, à placer dans notre fichier _google-
-geocoding.js_ :
+Voici le code de notre module, à placer dans notre fichier _google-geocoding.js_ :
 
 ```javascript
 var http = require("http");
@@ -420,9 +419,7 @@ tests pour nous. En effet nous avons indiqué dans le _package.json_ :
 ```
 
 Cette option indique à _npm_ qu'il peut lancer les tests en exécutant la
-commande mocha. À présent, si nous lançons la commande `npm test google-
-geocoding`, _npm_ va exécuter la commande mocha sur notre module fraîchement
-installé.
+commande mocha. À présent, si nous lançons la commande `npm test google-geocoding`, _npm_ va exécuter la commande _mocha_ sur notre module fraîchement installé.
 
 ```
 $ npm test google-geocoding

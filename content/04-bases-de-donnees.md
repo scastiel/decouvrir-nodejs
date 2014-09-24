@@ -172,7 +172,7 @@ db.serialize(function() {
 	db.all("select date from log", function(err, rows) {
 		if( rows.length == 0 )
 		{
-			console.log("Premièreexécution !");
+			console.log("Première exécution !");
 		}
 		else
 		{
@@ -304,15 +304,15 @@ Pour vérifier le contenu de notre collection, nous utilisons la méthode `find`
 de l'objet `db`, à laquelle nous pouvons donner des critères de recherche.
 
 ```
->db.utilisateurs.find();
+> db.utilisateurs.find();
 { "_id" : ObjectId("5238b1c15fe1afba9cec2027"), "nom" : "Pierre", "adresse" : { "voie" : "Avenue des Rues", "ville" : "Rennes" } }
 { "_id" : ObjectId("5238b1c95fe1afba9cec2028"), "nom" : "Jacques", "adresse" : { "voie" : "Rue des Avenues", "ville" : "Paris" } }
 { "_id" : ObjectId("5238b1d05fe1afba9cec2029"), "nom" : "Paul" }
 
->db.utilisateurs.find({ nom: 'Pierre' });
+> db.utilisateurs.find({ nom: 'Pierre' });
 { "_id" : ObjectId("5238b1c15fe1afba9cec2027"), "nom" : "Pierre", "adresse" : { "voie" : "Avenue des Rues", "ville" : "Rennes" } }
 
->db.utilisateurs.find({ 'adresse.ville': 'Paris' });
+> db.utilisateurs.find({ 'adresse.ville': 'Paris' });
 { "_id" : ObjectId("5238b1c95fe1afba9cec2028"), "nom" : "Jacques", "adresse" : { "voie" : "Rue des Avenues", "ville" : "Paris" } }
 ```
 
@@ -344,7 +344,7 @@ requiert le module _mongodb_.
 Voici le code source de notre exemple.
 
 ```javascript
-var mongoose =require('mongoose');
+var mongoose = require('mongoose');
 
 // 1- Déclaration du modèle
 var utilisateurSchema = mongoose.Schema({
