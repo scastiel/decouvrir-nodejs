@@ -406,6 +406,19 @@ Server running at http://127.0.0.1:1337/</code></pre>
 });</code></pre>
 <p>Le deuxième cas de figure est plus intéressant. On gère ici le cas où l'URL est de la forme <code>/hello/:name</code>. La partie <code>:name</code> correspond ici à un paramètre, c'est à dire à une valeur qui pourra être remplacée par n'importe quoi. Par exemple, si l'on appelle l'URL <em>http://localhost:8080/hello/Jean</em>, c'est cette fonction qui sera utilisée.</p>
 <p>Le plus intéressant avec ce paramètre est évidemment qu'il est possible de récupérer sa valeur. C'est ce qui est fait lorsque l'on renvoie le contenu en JSON, via <code>req.params.name</code>. C'est tout de même beaucoup plus simple que de récupérer l'URL, de la décomposer avec le module <em>url</em>, et d'adapter le comportement en fonction de la présence ou non du paramètre <code>name</code> !</p>
+<p>Voici le code du fichier <em>express01.html</em>, qui ressemble à l'exemple du chapitre précédent :</p>
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span><span class="ot"> placeholder=</span><span class="st">&quot;Enter your name&quot;</span><span class="ot"> id=</span><span class="st">&quot;name&quot;</span><span class="kw">/&gt;</span>
+<span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> value=</span><span class="st">&quot;OK&quot;</span><span class="ot"> onclick=</span><span class="st">&quot;valid()&quot;</span><span class="kw">/&gt;</span>
+<span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;message&quot;</span><span class="kw">&gt;&lt;/div&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;http://code.jquery.com/jquery-1.10.1.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script&gt;</span>
+<span class="er">function valid() {</span>
+<span class="er">    $.getJSON(&#39;/hello/&#39; + $(&#39;#name&#39;).val())</span>
+<span class="er">        .done(function(data) {</span>
+<span class="er">            $(&#39;#message&#39;).html(data.message);</span>
+        });
+}
+<span class="kw">&lt;/script&gt;</span></code></pre>
 <p>Bien évidemment, les fonctionnalités proposées par Express vont bien au-delà de cela, continuons notre exploration avec une fonction dont tout webmaster un minimum rigoureux a besoin : les templates.</p>
 <h2 id="utiliser-des-templates"><a href="#utiliser-des-templates">3.3 Utiliser des templates</a></h2>
 <p>Si vous avez déjà développé un site web, vous connaissez sans doute le principe des templates. Le but est d'écrire la vue (traditionnellement du HTML) séparément du code métier. Dans l'idéal, un webdesigner ne connaissant pas du tout le code métier (qu'il soit JavaScript, PHP, Ruby…) doit être capable d'écrire le template.</p>
@@ -419,13 +432,13 @@ Server running at http://127.0.0.1:1337/</code></pre>
 <h3 id="présentation-du-moteur-de-template-jade"><a href="#présentation-du-moteur-de-template-jade">3.3.1 Présentation du moteur de template Jade</a></h3>
 <p>Le moteur de template Jade permet typiquement de générer une page HTML, mais sa particularité est que les templates proprement dits ne sont pas écrits en HTML.</p>
 <p>Commençons avec un exemple de template Jade, celui que nous allons utiliser par la suite. Il s'agit quasiment du même exemple que celui vu précédemment, à l'exception qu'ici nous allons donner le choix à l'utilisateur entre plusieurs prénoms. (Révolutionnaire, non ?)</p>
-<pre class="jade"><code>!!!
+<pre class="jade"><code>doctype html
 html
     head
-        title= theTitle
+        title= title
     body
         div Choisir un prénom :
-        - for name in theNames  
+        - for name in names  
             label
                 input(type=&quot;radio&quot;,name=&quot;name&quot;,value=name)
                 span Prénom : #{name}
@@ -442,25 +455,25 @@ html
             }</code></pre>
 <p>Comme vous pouvez le remarquer, ça a le goût et l'odeur du HTML, mais ça n'en est pas. Les balises type XML ont disparu au profit d'une organisation à base d'indentation.</p>
 <p>Analysons pas à pas le contenu de ce template.</p>
-<pre class="jade"><code>!!!</code></pre>
-<p>La première instruction !!! sert à insérer la déclaration du <em>doctype</em> de notre page (celui de HTML5 par défaut). Le code généré sera <!DOCTYPE html>.</p>
+<pre class="jade"><code>doctype html</code></pre>
+<p>La première instruction <code>doctype html</code> sert à insérer la déclaration du <em>doctype</em> de notre page (celui de HTML5 par défaut). Le code généré sera <code>&lt;!DOCTYPE html&gt;</code>.</p>
 <pre class="jade"><code>html
     head
-        title= theTitle</code></pre>
+        title= title</code></pre>
 <p>Le document débute ensuite avec la déclaration de notre balise <code>html</code>, puis de sa balise <code>head</code>. Vous l'avez compris, pour déclarer une balise avec Jade (<code>html</code>, <code>a</code>, <code>p</code>, etc.), on commence la ligne avec le nom de la balise.</p>
-<p>Notre balise <code>title</code> a une petite particularité : on a écrit <code>title=</code> et non title. Cela indique à Jade que le contenu de la balise n'est pas le texte qui suit, mais le contenu de la variable dont le nom est indiqué, ici <code>theTitle</code>, que nous donnerons un peu plus tard à Jade pour qu'il génère le HTML.</p>
+<p>Notre balise <code>title</code> a une petite particularité : on a écrit <code>title=</code> et non <code>title</code>. Cela indique à Jade que le contenu de la balise n'est pas le texte qui suit, mais le contenu de la variable dont le nom est indiqué, ici <code>title</code>, que nous donnerons un peu plus tard à Jade pour qu'il génère le HTML.</p>
 <p>Si on avait voulu déclarer un titre statique (ne dépendant pas d'une variable), on aurait pu écrire : <code>title Hello!</code>.</p>
 <pre class="jade"><code>body
     div Choisir un prénom :</code></pre>
 <p>Nous attaquons ensuite le corps de la page avec la balise <code>body</code>. Son premier élément est une balise <code>div</code>, dont le contenu est « Choisir un prénom ».</p>
-<pre class="jade"><code>- for name in theNames  
+<pre class="jade"><code>- for name in names  
     label
         input(type=&quot;radio&quot;,name=&quot;name&quot;,value=name)
         span Prénom : #{name}
     br</code></pre>
 <p>Nouvelle instruction particulière ensuite, la ligne commence par le symbole <code>-</code> (tiret haut). Cela indique à Jade qu'il s'agit d'une instruction conditionnelle ou de boucle, ici <code>for</code>. Sa syntaxe est relativement similaire à ce que l'on voit dans d'autres langages : <code>- for var element in tableau</code> permet de parcourir les éléments du tableau en définissant à chaque itération la variable <code>element</code>.</p>
-<p>Dans notre exemple le tableau à parcourir est <code>theNames</code>, variable que nous allons fournir à Jade pour la génération, comme pour <code>theTitle</code> vue plus haut.</p>
-<p>Donc pour chaque élément de <code>theNames</code>, nous allons générer une balise <code>label</code>, qui contiendra elle-même deux balises, un bouton-radio et un libellé.</p>
+<p>Dans notre exemple le tableau à parcourir est <code>names</code>, variable que nous allons fournir à Jade pour la génération, comme pour <code>title</code> vue plus haut.</p>
+<p>Donc pour chaque élément de <code>names</code>, nous allons générer une balise <code>label</code>, qui contiendra elle-même deux balises, un bouton-radio et un libellé.</p>
 <p>Le bouton radio (en HTML <code>&lt;input type=&quot;radio&quot;...</code>) possède trois attributs qui sont définis dans Jade à l'aide de parenthèses. Notez que pour les attributs <code>type</code> et <code>name</code> les valeurs sont entre guillemets doubles car elles sont statiques. En revanche, <code>value=name</code> indique que Jade soit substituer <code>name</code> par la valeur de la variable <code>name</code>.</p>
 <p>Le libellé est déclaré par l'instruction <code>span Prénom : #{name}</code>. Si nous avions voulu que le libellé soit simplement le prénom à choisir, nous aurions écrit <code>span= name</code>. Mais la syntaxe que nous utilisons ici permet d'intégrer le contenu de la variable au sein de contenu statique. Ici, <code>#{name}</code> sera substitué par la valeur de la variable <code>name</code>.</p>
 <pre class="jade"><code>script(src=&quot;http://code.jquery.com/jquery-1.10.1.min.js&quot;)
@@ -477,20 +490,20 @@ script.
 <p>La première chose à faire est d'installer le module Jade, comme nous l'avons fait avec Express :</p>
 <pre class="sh"><code>$ npm install jade</code></pre>
 <p>À présent, le code de notre programme révolutionnaire, qui s'est encore un peu simplifié :</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> express =<span class="fu">require</span>(<span class="st">&#39;express&#39;</span>);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> express = <span class="fu">require</span>(<span class="st">&#39;express&#39;</span>);
 <span class="kw">var</span> fs = <span class="fu">require</span>(<span class="st">&#39;fs&#39;</span>);
 <span class="kw">var</span> app = <span class="fu">express</span>();
 
-<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;viewengine&#39;</span>, <span class="st">&#39;jade&#39;</span>);
+<span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;view engine&#39;</span>, <span class="st">&#39;jade&#39;</span>);
 <span class="ot">app</span>.<span class="fu">set</span>(<span class="st">&#39;views&#39;</span>, __dirname);
 
-<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/&#39;</span>,<span class="kw">function</span>(req, res) {
-    <span class="ot">res</span>.<span class="fu">render</span>(<span class="st">&#39;express02&#39;</span>, {<span class="dt">title</span>: <span class="st">&#39;Hello&#39;</span>, <span class="dt">names</span>: [ <span class="st">&#39;Pierre&#39;</span>, <span class="st">&#39;Paul&#39;</span>, <span class="st">&#39;Jacques&#39;</span> ] });
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/&#39;</span>, <span class="kw">function</span> (req, res) {
+  <span class="ot">res</span>.<span class="fu">render</span>(<span class="st">&#39;express02&#39;</span>, { <span class="dt">title</span>: <span class="st">&#39;Hello&#39;</span>, <span class="dt">names</span>: [ <span class="st">&#39;Pierre&#39;</span>, <span class="st">&#39;Paul&#39;</span>, <span class="st">&#39;Jacques&#39;</span> ] });
 });
 
-<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/hello/:name&#39;</span>, <span class="kw">function</span>(req,res){
-    <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
-    <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> + <span class="ot">req</span>.<span class="ot">params</span>.<span class="fu">name</span> + <span class="st">&#39;!&#39;</span>}));
+<span class="ot">app</span>.<span class="fu">get</span>(<span class="st">&#39;/hello/:name&#39;</span>, <span class="kw">function</span> (req, res) {
+  <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, { <span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span> });
+  <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({ <span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> + <span class="ot">req</span>.<span class="ot">params</span>.<span class="fu">name</span> + <span class="st">&#39;!&#39;</span> }));
 });
 
 <span class="ot">app</span>.<span class="fu">listen</span>(<span class="dv">8080</span>);</code></pre>
