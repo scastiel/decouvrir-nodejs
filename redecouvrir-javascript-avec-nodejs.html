@@ -268,17 +268,17 @@ Server running at http://127.0.0.1:1337/</code></pre>
 <p>Notre application se constituera d'un formulaire contenant un champ invitant l'utilisateur à saisir son nom. Un clic sur le bouton OK lancera un appel AJAX, qui recevra en réponse un message adapté au nom de l'utilisateur. Le message sera affiché sur la page.</p>
 <h3 id="une-page-html"><a href="#une-page-html">2.4.1 Une page HTML</a></h3>
 <p>Tout d'abord, nous aurons besoin d'un fichier HTML classique contenant un formulaire, permettant à l'utilisateur de saisir son nom : (appelons le <em>hello02.html</em>, nous l'utiliserons ensuite).</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript">&lt;input type=<span class="st">&quot;text&quot;</span> placeholder=<span class="st">&quot;Enter your name&quot;</span> id=<span class="st">&quot;name&quot;</span><span class="ot">/&gt;</span>
-<span class="ot">&lt;input type=&quot;button&quot; value=&quot;OK&quot; onclick=&quot;valid</span><span class="fl">()</span><span class="ot">&quot;/</span>&gt;
-&lt;div id=<span class="st">&quot;message&quot;</span>&gt;&lt;<span class="ot">/div&gt;</span>
-<span class="ot">&lt;script src=&quot;http://code.jquery.com/jquery</span><span class="fl">-1.10.1</span>.<span class="ot">min</span>.<span class="fu">js</span><span class="st">&quot;&gt;&lt;/script&gt;</span>
-&lt;script&gt;
-<span class="kw">function</span> <span class="fu">valid</span>() {
-    <span class="ot">$</span>.<span class="fu">get</span>(<span class="st">&#39;&#39;</span>, { <span class="dt">name</span>: <span class="fu">$</span>(<span class="st">&#39;#name&#39;</span>).<span class="fu">val</span>() }, <span class="kw">function</span>(data) {
-        <span class="fu">$</span>(<span class="st">&#39;#message&#39;</span>).<span class="fu">html</span>(<span class="ot">data</span>.<span class="fu">message</span>);
+<pre class="sourceCode html"><code class="sourceCode html"><span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;text&quot;</span><span class="ot"> placeholder=</span><span class="st">&quot;Enter your name&quot;</span><span class="ot"> id=</span><span class="st">&quot;name&quot;</span><span class="kw">/&gt;</span>
+<span class="kw">&lt;input</span><span class="ot"> type=</span><span class="st">&quot;button&quot;</span><span class="ot"> value=</span><span class="st">&quot;OK&quot;</span><span class="ot"> onclick=</span><span class="st">&quot;valid()&quot;</span><span class="kw">/&gt;</span>
+<span class="kw">&lt;div</span><span class="ot"> id=</span><span class="st">&quot;message&quot;</span><span class="kw">&gt;&lt;/div&gt;</span>
+<span class="kw">&lt;script</span><span class="ot"> src=</span><span class="st">&quot;http://code.jquery.com/jquery-1.10.1.min.js&quot;</span><span class="kw">&gt;&lt;/script&gt;</span>
+<span class="kw">&lt;script&gt;</span>
+<span class="er">function valid() {</span>
+<span class="er">    $.get(&#39;&#39;, { name: $(&#39;#name&#39;).val() }, function(data) {</span>
+<span class="er">        $(&#39;#message&#39;).html(data.message);</span>
     }, <span class="st">&#39;json&#39;</span>);
 }
-&lt;<span class="ot">/script&gt;</span></code></pre>
+<span class="kw">&lt;/script&gt;</span></code></pre>
 <p>Passons sur la validité HTML de ce code, seul le nécessaire s'y trouve. Tout d'abord un champ texte <code>name</code>, puis un bouton <em>OK</em> qui lorsque l'on clique dessus appelle la fonction <code>valid()</code> définie ensuite. On utilise <em>jQuery</em> pour réaliser un appel AJAX. Le script passé en premier paramètre à <code>$.get</code> est vide, ce qui indique au navigateur d'appeler la page sur laquelle on se trouve.</p>
 <p>Si vous ouvrez la page dans votre navigateur et que vous remplissez le champ et cliquez sur le bouton, vous pourrez à l'aide d'un outil comme Firebug ou les outils de développement Chrome visualiser la requête qui est envoyée via Ajax : <em>file:///.../hello02.html?name=Paul</em>.</p>
 <p>Pas de Node.js ici, mais ne vous inquiétez pas, ça arrive !</p>
@@ -301,7 +301,7 @@ Server running at http://127.0.0.1:1337/</code></pre>
         <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;application/json&#39;</span>});
         <span class="ot">res</span>.<span class="fu">end</span>(<span class="ot">JSON</span>.<span class="fu">stringify</span>({<span class="dt">message</span>: <span class="st">&#39;Hello &#39;</span> +name + <span class="st">&#39;!&#39;</span>}));
     } <span class="kw">else</span> {
-        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;Noname!&#39;</span>);
+        <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&#39;No name!&#39;</span>);
         <span class="ot">res</span>.<span class="fu">writeHead</span>(<span class="dv">200</span>, {<span class="st">&#39;Content-Type&#39;</span>: <span class="st">&#39;text/html&#39;</span>});
         <span class="ot">fs</span>.<span class="fu">readFile</span>(<span class="st">&#39;hello02.html&#39;</span>,<span class="kw">function</span> (err,data) {
             <span class="ot">res</span>.<span class="fu">end</span>(data);
@@ -693,7 +693,7 @@ jacques: Jacques</code></pre>
     <span class="ot">db</span>.<span class="fu">all</span>(<span class="st">&quot;select date from log&quot;</span>, <span class="kw">function</span>(err, rows) {
         <span class="kw">if</span>( <span class="ot">rows</span>.<span class="fu">length</span> == <span class="dv">0</span> )
         {
-            <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;Premièreexécution !&quot;</span>);
+            <span class="ot">console</span>.<span class="fu">log</span>(<span class="st">&quot;Première exécution !&quot;</span>);
         }
         <span class="kw">else</span>
         {
@@ -756,15 +756,15 @@ ville: &#39;Paris&#39; } });
 &gt; db.utilisateurs.save({ nom: &#39;Paul&#39; });</code></pre>
 <p>Pour ce qui est de la terminologie Mongo, nous venons ici d'insérer trois <em>documents</em> dans une <em>collection</em>. Vous constaterez que les documents d'une collection peuvent être hétérogènes ; évidemment il vaut mieux éviter qu'ils le soient trop.</p>
 <p>Pour vérifier le contenu de notre collection, nous utilisons la méthode <code>find</code> de l'objet <code>db</code>, à laquelle nous pouvons donner des critères de recherche.</p>
-<pre><code>&gt;db.utilisateurs.find();
+<pre><code>&gt; db.utilisateurs.find();
 { &quot;_id&quot; : ObjectId(&quot;5238b1c15fe1afba9cec2027&quot;), &quot;nom&quot; : &quot;Pierre&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Avenue des Rues&quot;, &quot;ville&quot; : &quot;Rennes&quot; } }
 { &quot;_id&quot; : ObjectId(&quot;5238b1c95fe1afba9cec2028&quot;), &quot;nom&quot; : &quot;Jacques&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Rue des Avenues&quot;, &quot;ville&quot; : &quot;Paris&quot; } }
 { &quot;_id&quot; : ObjectId(&quot;5238b1d05fe1afba9cec2029&quot;), &quot;nom&quot; : &quot;Paul&quot; }
 
-&gt;db.utilisateurs.find({ nom: &#39;Pierre&#39; });
+&gt; db.utilisateurs.find({ nom: &#39;Pierre&#39; });
 { &quot;_id&quot; : ObjectId(&quot;5238b1c15fe1afba9cec2027&quot;), &quot;nom&quot; : &quot;Pierre&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Avenue des Rues&quot;, &quot;ville&quot; : &quot;Rennes&quot; } }
 
-&gt;db.utilisateurs.find({ &#39;adresse.ville&#39;: &#39;Paris&#39; });
+&gt; db.utilisateurs.find({ &#39;adresse.ville&#39;: &#39;Paris&#39; });
 { &quot;_id&quot; : ObjectId(&quot;5238b1c95fe1afba9cec2028&quot;), &quot;nom&quot; : &quot;Jacques&quot;, &quot;adresse&quot; : { &quot;voie&quot; : &quot;Rue des Avenues&quot;, &quot;ville&quot; : &quot;Paris&quot; } }</code></pre>
 <p>Pour mettre à jour un document, nous utilisons la méthode update :</p>
 <pre><code>&gt;db.utilisateurs.update( { nom: &#39;Paul&#39; }, { nom: &#39;Paul&#39;, nb: 3 } );
@@ -776,7 +776,7 @@ ville: &#39;Paris&#39; } });
 <p>Il existe plusieurs modules permettant d'accéder à MongoDB en Node.js. Le module de base est <em>mongodb</em>, qui fournit une interface permettant d'effectuer des opérations sur une base de la même manière que nous venons de le faire avec le shell <em>mongo</em>. Le module <em>mongoose</em> est un autre module officiel, qui en se basant sur <em>mongodb</em> introduit une couche supplémentaire facilitant la manipulation des données grâce à une couche ODM <em>(object-document mapper)</em>, équivalent pour les documents des ORM <em>(object-relational mapper)</em>.</p>
 <p>Pour installer <em>mongoose</em> : <code>npm install mongoose</code>. Remarquez que <em>mongoose</em> requiert le module <em>mongodb</em>.</p>
 <p>Voici le code source de notre exemple.</p>
-<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> mongoose =<span class="fu">require</span>(<span class="st">&#39;mongoose&#39;</span>);
+<pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> mongoose = <span class="fu">require</span>(<span class="st">&#39;mongoose&#39;</span>);
 
 <span class="co">// 1- Déclaration du modèle</span>
 <span class="kw">var</span> utilisateurSchema = <span class="ot">mongoose</span>.<span class="fu">Schema</span>({
@@ -870,7 +870,7 @@ Bonjour, je m&#39;appelle Pierre !</code></pre>
 <h2 id="testons-notre-module-avec-mocha"><a href="#testons-notre-module-avec-mocha">5.2 Testons notre module avec Mocha</a></h2>
 <p>Et là vous cherchez si vous n'avez pas oublié de lire un chapitre. Et bien non : nous allons bien tester notre module <em>google-geocoding</em> avant même de l'écrire. En réalité, nous n'allons qu'écrire les tests unitaires, autrement dit nous allons appliquer la méthode bien connue et très en vogue de développement des <em>TDD</em>, pour <em>test-driven development</em>. Le principe est simple : écrire les tests en fonction des spécifications et non du code testé. Idéalement, ces tests sont mêmes écrits par un autre développeur que celui écrivant le code testé.</p>
 <p>Entrons dans le vif du sujet : <em>Mocha</em>. Il s'agit d'un module (qui s'installe avec <code>npm install -g mocha</code>) permettant de réaliser très simplement des tests unitaires sur du code JavaScript, et plus particulièrement avec Node.js. En complément de Mocha, nous utiliserons également le module <em>Should</em> (<code>npm install should</code>) facilitant l'écriture des tests unitaires.</p>
-<p>Une fois le module Mocha installé, la commande <code>mocha</code> peut être exécutée en ligne de commande afin de lancer les tests. Par défaut, Mocha va chercher les tests dans le fichier <em>tests/test.js</em>. Créons donc ce fichier, avec le contenu suivant :</p>
+<p>Une fois le module Mocha installé, la commande <code>mocha</code> peut être exécutée en ligne de commande afin de lancer les tests. Par défaut, Mocha va chercher les tests dans le fichier <em>test/test.js</em>. Créons donc ce fichier, avec le contenu suivant :</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> should = <span class="fu">require</span>(<span class="st">&#39;should&#39;</span>);
 <span class="kw">var</span> google_geocoding = <span class="fu">require</span>(<span class="st">&#39;../google-geocoding&#39;</span>);
 
@@ -913,7 +913,7 @@ Google geocoding
 <p>Sans surprise, les tests ne passent pas. Notez tout de même que l'affichage généré par Mocha rend le résultat facilement compréhensible, avec le détail et la trace de chaque erreur (que je n'ai pas reproduits ici).</p>
 <p>Maintenant que notre module est testable, il est temps d'en écrire le contenu.</p>
 <h2 id="le-module-de-geocoding"><a href="#le-module-de-geocoding">5.3 Le module de geocoding</a></h2>
-<p>Voici le code de notre module, à placer dans notre fichier <em>google- geocoding.js</em> :</p>
+<p>Voici le code de notre module, à placer dans notre fichier <em>google-geocoding.js</em> :</p>
 <pre class="sourceCode javascript"><code class="sourceCode javascript"><span class="kw">var</span> http = <span class="fu">require</span>(<span class="st">&quot;http&quot;</span>);
 
 <span class="ot">module</span>.<span class="ot">exports</span>.<span class="fu">geocode</span> = <span class="kw">function</span>(address, callback) {
@@ -1090,7 +1090,7 @@ Latitude : 48.1091828 ; Longitude : -1.6839106</code></pre>
 <pre class="sourceCode json"><code class="sourceCode json"><span class="er">&quot;scripts&quot;:</span> {
     <span class="dt">&quot;test&quot;</span>: <span class="st">&quot;mocha -R spec&quot;</span>
 }</code></pre>
-<p>Cette option indique à <em>npm</em> qu'il peut lancer les tests en exécutant la commande mocha. À présent, si nous lançons la commande <code>npm test google- geocoding</code>, <em>npm</em> va exécuter la commande mocha sur notre module fraîchement installé.</p>
+<p>Cette option indique à <em>npm</em> qu'il peut lancer les tests en exécutant la commande mocha. À présent, si nous lançons la commande <code>npm test google-geocoding</code>, <em>npm</em> va exécuter la commande <em>mocha</em> sur notre module fraîchement installé.</p>
 <pre><code>$ npm test google-geocoding
 &gt; google-geocoding@0.1.1 test D:\Documents\nodejs\node_modules\google-
 geocoding
