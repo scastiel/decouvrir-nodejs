@@ -15,7 +15,7 @@ Le livre est lisible en ligne aux formats [HTML](http://scastiel.github.io/decou
 
 ## Exemples
 
-J'ai commencé à fournir sur ce dépôt les codes sources des exemples du livre. Pour les exécuter, la procédure est normalement toujours la même ; il suffit d'installer les dépendances de manière classique grace à `npm install`, par exemple :
+Sont présents sur ce dépôt les codes sources des exemples du livre. Pour les exécuter, la procédure est normalement toujours la même ; il suffit d'installer les dépendances de manière classique grace à `npm install`, par exemple :
 
 ```sh
 $ cd exemples/03-express/32-application-basique
