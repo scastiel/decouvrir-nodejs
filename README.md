@@ -3,6 +3,8 @@ Redécouvrir JavaScript avec Node.js
 
 Sur ce repository vous trouverez les sources de la dernière version de mon livre _Redécouvrir JavaScript avec Node.js_.
 
+Je m'occupe de ce livre sur mon temps libre. Vous pouvez me soutenir dans cette démarche grâce à [Flattr](https://flattr.com/submit/auto?user_id=scastiel&url=https%3A%2F%2Fgithub.com%2Fscastiel%2Fdecouvrir-nodejs) ou en Bitcoins : `12VxAQeBL6rcXP1Cz5i4C9paYvLejMkWqq`. Merci :)
+
 ## Licence
 
 Le livre est diffusé sous licence **Creative Commons**, ce qui signifie que vous êtes libre de le partager et de l'adapter, sous certains conditions dont les détails sont visibles ici : http://creativecommons.org/licenses/by-nc-sa/4.0/deed.fr
