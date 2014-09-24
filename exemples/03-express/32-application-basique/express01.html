@@ -1,0 +1,12 @@
+<input type="text" placeholder="Enter your name" id="name"/>
+<input type="button" value="OK" onclick="valid()"/>
+<div id="message"></div>
+<script src="http://code.jquery.com/jquery-1.10.1.min.js"></script>
+<script>
+function valid() {
+    $.getJSON('/hello/' + $('#name').val())
+	    .done(function(data) {
+	        $('#message').html(data.message);
+	    });
+}
+</script>

@@ -1,0 +1,21 @@
+doctype html
+html
+    head
+        title= title
+    body
+        div Choisir un prénom :
+        - for name in names  
+            label
+                input(type="radio",name="name",value=name)
+                span Prénom : #{name}
+            br
+        div
+            input(type="button",onclick="valid()",value="OK")
+            #message
+        script(src="http://code.jquery.com/jquery-1.10.1.min.js")
+        script.
+            function valid() {
+                $.get('/hello/' + $('[name=name]:checked').val(), function(data) {
+                    $('#message').html(data.message);
+                }, 'json');
+            }
