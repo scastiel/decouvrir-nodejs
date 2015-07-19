@@ -27,7 +27,7 @@ on utilise Internet : Ajax _(Asynchronous JavaScript and XML)_. Pour faire
 simple, Ajax consiste à utiliser des possibilités de JavaScript et des
 navigateurs pourtant présentes depuis fort longtemps pour faire charger des
 données depuis le serveur sans avoir besoin de recharger la page. Cela paraît
-simple, pourtant cette avancéea permis de concevoir des applications web
+simple, pourtant cette avancée a permis de concevoir des applications web
 tellement réactives qu'elles se sont progressivement substituées aux
 applications de bureau.
 

@@ -34,6 +34,6 @@ application web (appels AJAX, protocole HTTP...).
 Notez également que les chapitres 3, 4 et 5 peuvent être lus dans n'importe
 quel ordre.
 
-À présent j'espère que vous prendre plaisir à lire ce livre. Pour tout
-critique, remarque ou suggestion, n'hésitez pas à me contacter à l'adresse :
+À présent j'espère que vous prendre plaisir à lire ce livre. Pour toutes
+critiques, remarques ou suggestions, n'hésitez pas à me contacter à l'adresse :
 sebastien.castiel@gmail.com.

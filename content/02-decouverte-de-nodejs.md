@@ -315,7 +315,7 @@ fs.readFile('hello02.html', function (err,data) {
 
 Dans le cas où aucun nom n'est fourni (on appelle l'URL sans paramètre), on
 commence par afficher le message « No name! » dans la console. Puis on définit
-le contenu de la réponse HTTP comme de type « text/html », c'est à dire une
+le contenu de la réponse HTTP comme de type « text/html », c'est-à-dire une
 page HTML classique.
 
 Puis on fait appel à la méthode `readFile` du module _fs_ qui nous permet de
