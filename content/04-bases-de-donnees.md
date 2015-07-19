@@ -8,7 +8,7 @@ données comme MySQL ou Oracle (bien que cela soit possible, on préfèrera
 passer par l'intermédiaire d'une API ou d'un webservice externe pour cela),
 mais utiliser un système plus souple et plus léger.
 
-Nous verrons dans ce chapitre deux système fréquemment utilisés avec Node.js.
+Nous verrons dans ce chapitre deux systèmes fréquemment utilisés avec Node.js.
 Le premier est _SQLite3_, dont le principe est de stocker une base dans un
 fichier, et d'y accéder grâce au langage SQL. Le second, _MongoDB_ est
 radicalement différent ; les données qui y sont stockées ressemblent
@@ -28,7 +28,7 @@ gestion d'utilisateurs : si un programme a le droit d'accéder au fichier,
 alors il peut accéder à la base de données.
 
 Cela rend SQLite relativement facile à prendre en main et à maintenir. Son
-utilisation principale n'est pas la gestion de grosses base de données métier,
+utilisation principale n'est pas la gestion de grosses bases de données métier,
 on réservera cela aux gros MySQL, Oracle, SQL Server… Mais il est extrêmement
 utilisé par exemple pour stocker des données de configuration, ou encore des
 données mises en cache, pour soulager la base de données principale d'un gros
@@ -101,7 +101,7 @@ db.run("create table users (login, name)");
 
 Ici, grâce à la méthode `db.run`, nous exécutons une simple requête SQL, en
 l'occurrence nous créons une table _users_ composée de deux colonnes : _login_
-et _name_. Notez que SQLite n'est pas très exigent sur le typage des données.
+et _name_. Notez que SQLite n'est pas très exigeant sur le typage des données.
 Par défaut, les colonnes sont de type _chaîne_.
 
 ```javascript

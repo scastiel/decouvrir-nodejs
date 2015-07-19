@@ -12,7 +12,7 @@ même des applications mobiles grâce à l'envolée du HTML5.
 Node.js n'est pas le seul acteur de ce succès. AngularJS par exemple devient
 de plus en plus répandu pour la création d'interfaces clientes riches, en
 intégrant une logique modèle-vue-contrôleur côté client. Imaginez ce que peut
-donner une application web dont la partie cliente est basée surAngularJS et la
+donner une application web dont la partie cliente est basée sur AngularJS et la
 partie serveur sur Node.js avec Express !
 
 Mais JavaScript reste un langage dont la syntaxe peut donner des programmes
